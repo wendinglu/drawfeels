@@ -32,10 +32,10 @@ router.post('/adduser', function(req, res) {
 
     // Get our form values. These rely on the "name" attributes
     var title = req.body.title;
-    var date = req.body.date;
+    var date = Date.now();
     var image = req.body.image;
     var song = req.body.song;
-    var user = req.body.user;
+    var user = 1; //HACK, will change for support of multiple users
 
     // Set our collection
     var collection = db.get('usercollection');
