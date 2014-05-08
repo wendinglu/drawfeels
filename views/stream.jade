@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1= title
+  p Recently Drawn Images
+
+  .container
+    if drawings.length
+      each drawing in drawings
+        .drawing-box
+          img(src=drawing.image)
+          .subheading
+            span.bold
+              = drawing.title
+            = " posted by: " + drawing.user
+
+    else 
+      p No drawings found

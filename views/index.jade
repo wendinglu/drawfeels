@@ -1,0 +1,27 @@
+extends layout
+
+block content
+
+  link(rel='stylesheet', href='stylesheets/drawingboard.min.css')
+  script(src='/js/jquery-1.11.1.min.js')
+  script(src='/js/drawingboard.min.js')
+
+  form#formAddUser(name="adduser",method="post",action="/adduser")
+    
+    input#inputTitle(type="text", placeholder="Drawing Title", name="title")
+    input#inputSong(type="text", placeholder="song", name="song")
+    div(id="drawing-container")
+
+    input(type='hidden' name='image' value='')
+
+    input(type='submit',value='Submit')
+
+  script(type='text/javascript').
+      var myBoard = new DrawingBoard.Board('drawing-container', {droppable: true})
+      myBoard.addControl('Download')
+      $('#formAddUser').on('submit', function(e) {
+        var img = myBoard.getImg()
+        $(this).find('input[name=image]').val( img )
+        myBoard.clearWebStorage()
+      })
+
