@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 We implemented the two most critical features of our app so far: the ability to draw or drop an image on a canvas, and to save and publish that drawing to a stream for other users to view. We chose to simply save the image and publish the final image since from our Wizard of Oz tests, users were generally too impatient to view the entire drawing process of each image. We also noticed that certain users preferred to draw their images by hand, so we allowed them to drop an image on the screen. Additionally, this made implementation much easier as well.
-=======
-We implemented the two most critical features of our app so far: the ability to draw on a canvas, and to save and publish that drawing to a stream for other users to view. We chose to simply save the image and publish the final image since from our Wizard of Oz tests, users were generally too impatient to view the entire drawing process of each image. Additionally, this made implementation much easier as well.
->>>>>>> e233f2e848216de2a5af8e9a7450b48c81599a46
 
 We chose to save each image as a large image in a stream since we initially want to give emphasis to each drawing (since there aren't many being created). This consideration can change as we get more content postings.
 
