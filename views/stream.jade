@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  p Stream page - all of your streams
+
+  .container
+    if drawings.length
+      each drawing in drawings
+        .drawing-box
+          img(src=drawing.image)
+
+    else 
+      p No drawings found
