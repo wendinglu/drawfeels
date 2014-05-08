@@ -62,4 +62,10 @@ router.post('/adduser', function(req, res) {
     });
 });
 
+router.post('/', function(req, res) {
+  var imgDataURL = req.body.image;
+  //store the image to the database
+  res.render('index', { title: 'Express', imgURL: imgDataURL });
+});
+
 module.exports = router;
