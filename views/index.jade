@@ -1,5 +1,12 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  link(rel='stylesheet', href='stylesheets/drawingboard.min.css')
+  script(src='/js/jquery-1.11.1.min.js')
+  script(src='/js/drawingboard.min.js')
+  
+  div(id="drawing-container")
+
+  script(type='text/javascript').
+    var myBoard = new DrawingBoard.Board('drawing-container')
+    customBoard.addControl('Download')
