@@ -1,0 +1,14 @@
+We implemented the two most critical features of our app so far: the ability to draw on a canvas, and to save and publish that drawing to a stream for other users to view. We chose to simply save the image and publish the final image since from our Wizard of Oz tests, users were generally too impatient to view the entire drawing process of each image. Additionally, this made implementation much easier as well.
+
+We chose to save each image as a large image in a stream since we initially want to give emphasis to each drawing (since there aren't many being created). This consideration can change as we get more content postings.
+
+<screen capture of stream and drawing tool side by side>
+
+Music is also an important part of being able to express a feeling, and as shown by our WOz testing, the song choice can greatly alter what emotion a drawing is perceived to be expressing. Additionally, since music not everyone played music that was relevant to their emotions, we're making the addition of a song optional.
+
+Remaining Implementation:
+User Accounts - so users can view photos by friends and control who can see their drawings
+
+Communication system - Users can personally message/reach out to the poster of a drawing
+
+Better Drawing System - We learned from our WOz testing that even an advanced drawing app like Paper for the iPad wasn't encouraging the kind of rich abstract drawing that we were hoping for (whereas real paper and pastels tended to). If there is time, we would modify the drawing interface to be much more conducive to the rich colorful drawings people are more inclined to do in real life.

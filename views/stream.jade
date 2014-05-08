@@ -3,3 +3,12 @@ extends layout
 block content
   h1= title
   p Stream page - all of your streams
+
+  .container
+    if drawings
+      for drawing in drawings
+        .drawing-box
+          img(src=drawing.url)
+
+    else 
+      p No drawings found
