@@ -5,10 +5,10 @@ block content
   p Stream page - all of your streams
 
   .container
-    if drawings
-      for drawing in drawings
+    if drawings.length
+      each drawing in drawings
         .drawing-box
-          img(src=drawing.url)
+          img(src=drawing.image)
 
     else 
       p No drawings found
