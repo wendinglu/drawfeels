@@ -1,0 +1,12 @@
+block content
+    h1.
+        Photo List
+    ul
+        each user, i in userlist
+            li
+                h4 Title: #{user.title}
+                h4 Date: #{user.date}
+                h4 User: #{user.user}
+                h4 Song: #{user.song}
+                h4 Image: 
+                img(src= user.image)
