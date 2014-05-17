@@ -16,6 +16,7 @@
     "less-middleware": "0.1.15",
     "mongodb": "*",
     "monk": "*",
-    "moment": "~2.6.0"
+    "moment": "~2.6.0",
+    "coffee-script": "~1.7.1"
   }
 }
