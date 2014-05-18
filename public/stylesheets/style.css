@@ -15,7 +15,7 @@ a {
   border: 1px solid #000;
 }
 
-.circular {
+.circular-med {
   display: inline-block;
   width: 75px;
   height: 75px;
@@ -25,7 +25,10 @@ a {
   overflow: hidden;
 }
 
-.circular-choice{
+.circular-small{
+  width: 50px;
+  -khtml-opacity: .5;
+  opacity: .5;
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -34,11 +37,6 @@ a {
   -moz-border-radius: 25px;
   overflow: hidden;
 
-}
-.choice-img{
-  width: 50px;
-  -khtml-opacity: .5;
-  opacity: .5;
 }
 
 .circular IMG {
