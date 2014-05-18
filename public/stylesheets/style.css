@@ -8,3 +8,43 @@ a {
 #drawing-container {
   height: 400px;
 }
+
+.literally{
+  width: 50%;
+  height: 500px;
+  border: 1px solid #000;
+}
+
+.circular {
+  display: inline-block;
+  width: 75px;
+  height: 75px;
+  border-radius: 36.5px;
+  -webkit-border-radius: 36.5px;
+  -moz-border-radius: 36.5px;
+  overflow: hidden;
+}
+
+.circular-choice{
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  overflow: hidden;
+
+}
+.choice-img{
+  width: 50px;
+  -khtml-opacity: .5;
+  opacity: .5;
+}
+
+.circular IMG {
+  width: 75px;
+}
+
+#isdrawing{
+  display: inline;
+}

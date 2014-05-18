@@ -1,0 +1,47 @@
+extends layout
+
+block content
+
+  link(rel='stylesheet', href='stylesheets/literally.css')
+  script(src='/js/jquery-1.11.1.min.js')
+  script(src='/js/literallycanvas.jquery.js')
+
+  //should take in the current user and a list of users
+  //should take in whether or not there is a preset recipient or title (for cases where requests are made)
+
+  form#formAddUser(name="adduser",method="post",action="/adduser")
+    div
+      div(class="circular")
+        //image should be image of current user
+        img(src="images/image1.jpg") 
+      span(id="isdrawing") is drawing
+      input(type='text' id='title-text' name='tile' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+    
+    div(class="literally")
+      canvas
+
+    input(type='hidden' name='image' value='')
+
+    div(id="send-to")
+    input(type='hidden' name='recipients' value='')
+
+
+
+    input(type='submit',value='Send')
+
+  script(type='text/javascript').
+      $('.literally').literallycanvas({imageURLPrefix: 'images/icons'})
+      //nest in for loop for all children
+      var family_member = document.createElement('div')
+      $(family_member).addClass("circular-choice")
+      $(family_member).html("<img class='choice-img' src='images/image2.jpg'>")
+
+      $('#send-to').append(family_member)
+
+      $('#send-to').on( "click", ".choice-img", function() {
+        console.log("clic");
+        this.style.opacity == 1 ? this.style.opacity = .5 : this.style.opacity = 1;
+      })
+      
+      
+
