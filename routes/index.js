@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
+var fs = require('fs');
+var sys = require('sys');
 
 /* GET home page. */
 router.get('/', function(req, res) {

@@ -8,7 +8,7 @@ block content
 
   //should take in whether or not there is a preset recipient or title (for cases where requests are made)
 
-  form#formAddUser(name="adduser",method="post",action="/adduser")
+  form#formAddUser(name="sendImage",method="post",action="/draw/sendImage")
     img(class="circular-med" src=user.img) 
     span(id="isdrawing") is drawing
     input(type='text' id='title-text' name='tile' value='something' onclick="if (this.value == 'something') {this.value = '';}")

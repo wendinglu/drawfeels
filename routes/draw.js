@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
+var sys = require('sys');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -12,5 +14,14 @@ router.get('/', function(req, res) {
       "user": current_user
     });
 });
+
+router.post('/sendImage', function(req, res) {
+  var img = req.body.image;
+  var data = img.replace(/^data:image\/\w+;base64,/, "");
+  var buf = new Buffer(data, 'base64');
+  fs.writeFile('./public/images/image.png', buf);
+  
+});
+
 
 module.exports = router;
