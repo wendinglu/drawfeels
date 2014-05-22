@@ -9,6 +9,7 @@ block content
     p= 'Current logged in as ' + family.username
   else
     p not logged in
+    a(href="/users/login") login
 
   form#formAddUser(name="adduser",method="post",action="/adduser")
     
