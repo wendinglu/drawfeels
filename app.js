@@ -14,6 +14,7 @@ var db = monk('localhost:27017/drawfeels');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var stream = require('./routes/stream');
+var draw = require('./routes/draw');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use(function(req,res,next){
 app.use('/', routes);
 app.use('/users', users);
 app.use('/stream', stream);
+app.use('/draw', draw)
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

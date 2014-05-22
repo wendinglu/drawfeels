@@ -1,0 +1,58 @@
+extends layout
+
+block content
+
+  link(rel='stylesheet', href='stylesheets/literally.css')
+  script(src='/js/jquery-1.11.1.min.js')
+  script(src='/js/literallycanvas.jquery.js')
+
+  //should take in whether or not there is a preset recipient or title (for cases where requests are made)
+
+  form#formAddUser(name="sendImage",method="post",action="/draw/sendImage")
+    img(class="circular-med" src=user.img) 
+    span(id="isdrawing") is drawing
+    input(type='text' id='title-text' name='tile' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+    
+    div(class="literally")
+      canvas
+
+    input(type='hidden' name='image' value='')
+
+    div(id="send-to")
+    input(type='hidden' name='recipients' value='')
+
+    input(type='submit' data-action="publish" value='Send')
+
+  != "<script type='text/javascript'>"
+  != "var selected = [];"
+  each mem in members
+    != "var member_img = document.createElement('img');"
+    != "member_img.src = '" + mem.img+ "';"
+    != "$(member_img).addClass('circular-small');"
+    != "$('#send-to').append(member_img);"
+    != "member_img.onclick = function(){"
+      != "if(this.style.opacity == 1){"
+        != "this.style.opacity = .5;"
+        != "selected.splice(selected.indexOf({'img':'"+mem.img+"'}), 1);" 
+      != "} else {"
+        != "this.style.opacity = 1;"
+        != "selected.push({'img':'"+ mem.img +"'})"
+      != "}"
+      != "console.log(selected);"
+    != "};"
+  != "</script>"
+
+  script(type='text/javascript').
+      $('.literally').literallycanvas({imageURLPrefix: 'images/icons', 
+      onInit: function(lc) { $('[data-action=publish]').click(function(e) {
+        var img = lc.canvasForExport().toDataURL()
+        $('#formAddUser').find('input[name=image]').val( img )
+        $('#formAddUser').find('input[name=recipients]').val (selected)
+        console.log(selected)
+        console.log("done")
+      })}})
+      
+      
+      
+      
+
