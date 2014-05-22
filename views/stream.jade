@@ -1,10 +1,9 @@
 extends layout
 
 block content
-  h1= title
   form(action="/draw")
     input(class="menu_button" type="submit" value="Draw")
-  form(action="/draw")
+  form(action="/requestDrawing")
     input(class="menu_button" type="submit" value="Request")
   div(id="requests-div")
   p Recently Drawn Images
@@ -13,11 +12,22 @@ block content
     if drawings.length
       each drawing in drawings
         .drawing-box
-          img(src=drawing.image)
+          console.log(BOO)
+          if drawing.from
+            img.circular-med(src='#{drawing.from.picture}')
+            span.inlineText drew #{drawing.description}
+          if drawing.to
+            span.inlineText for
+              img.circular-small(src='#{drawing.to.picture}')
+          console.log('#{drawing.url}')
+          img(src='#{drawing.url}')
           .subheading
             span.bold
-              = drawing.title
-            = " posted by: " + drawing.user
+              = drawing.desecription
+            form(name="draw" method="post" action="/draw")
+              input(type="hidden" name='img' value='#{drawing.url}')
+              input(type="hidden" name='detail' value='#{drawing.description}')
+              input(type="submit" value="Add To Drawing")
             
     else 
       p No drawings found

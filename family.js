@@ -7,5 +7,6 @@ var Schema = mongoose.Schema;
 		username: String,
 		members: [Schema.Types.ObjectId]
 	});
-	mongoose.model("familySchema", familySchema);
-	mongoose.connect( 'mongodb://localhost/express-family' );
+	mongoose.model("familySchema",familySchema);
+	//mongoose.connect( 'mongodb://localhost/express-family' );
+//};

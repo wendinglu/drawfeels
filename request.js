@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-module.exports = function() {
+//module.exports = function() {
 	var requestSchema = new Schema({
 		from: Schema.Types.ObjectId,
 		to: Schema.Types.ObjectId,
@@ -10,5 +10,5 @@ module.exports = function() {
 		seen: Boolean
 	});
 	mongoose.model("requestSchema",requestSchema);
-	mongoose.connect( 'mongodb://localhost/express-request' );
-};
+//	mongoose.connect( 'mongodb://localhost/express-request' );
+//};

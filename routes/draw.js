@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var sys = require('sys');
+var mongoose = require('mongoose');
+var drawingSchema = mongoose.model('drawingSchema');
+mongoose.connect( 'mongodb://localhost/express-family' );
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -16,6 +19,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
+  var family_members = [{'img' :'images/image2.jpg'}, {'img': 'images/image3.jpg'}, {'img': 'images/image4.jpg'}, {'img': 'images/image5.jpg'}, {'img': 'images/image1.jpg'}];
   var current_user = {'img': 'images/image1.jpg'}
   var img = req.body.img;
   var rcpt = req.body.recipient;
@@ -26,7 +30,8 @@ router.post('/', function(req, res) {
     "img": img,
     "recipients": rcpt,
     "detail": detail,
-    "user": current_user
+    "user": current_user,
+    "members": family_members
   })
 
 
@@ -48,6 +53,17 @@ router.post('/sendImage', function(req, res) {
 
   var imgName = token();
   fs.writeFile('./public/images/drawings/' + imgName + '.png', buf);
+  var drawnscheme = new drawingSchema({
+    url: 'images/drawings/' + imgName + '.png' ,
+    description: req.body.detail,
+
+  });
+  drawnscheme.save( function( err, drawingSchema){
+    if (err) return console.error(err);
+    console.log(drawnscheme);
+    res.redirect( '/stream' );
+  });
+
   
 });
 

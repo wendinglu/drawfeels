@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  script(src='/js/jquery-1.11.1.min.js')
+
+  form(method="post" action="postRequest")
+    h2 Ask
+      div#requestFrom
+    h3 to draw you
+    input(type='hidden' name='recipients')
+    input(type='text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+    input(type='submit' data-action='sendReq' value='Send Request')
+
+  != "<script type='text/javascript'>"
+  != "var selected = [];"
+  each mem in members
+    != "var member_img = document.createElement('img');"
+    != "member_img.src = '" + mem.img+ "';"
+    != "$(member_img).addClass('circular-small');"
+    != "$('#requestFrom').append(member_img);"
+    != "member_img.onclick = function(){"
+      != "if(this.style.opacity == 1){"
+        != "this.style.opacity = .5;"
+        != "selected.splice(selected.indexOf({'img':'"+mem.img+"'}), 1);" 
+      != "} else {"
+        != "this.style.opacity = 1;"
+        != "selected.push({'img':'"+ mem.img +"'})"
+      != "}"
+      != "console.log(selected);"
+    != "};"
+  != "</script>"
+
+  script.
+    $('[data-action=sendReq]').click(function(e) {
+      $('#formAddUser').find('input[name=recipients]').val (selected)
+    });

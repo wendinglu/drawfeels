@@ -1,15 +1,15 @@
-var express = require('express');
-var router = express.Router();
-
 var mongoose = require('mongoose');
 var familySchema = mongoose.model('familySchema');
+var drawingSchema = mongoose.model('drawingSchema');
+var express = require('express');
+var router = express.Router();
 
 var fs = require('fs');
 var sys = require('sys');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express', user: req.session.user });
+  res.render('index', { title: 'Express', family: req.session.family });
 });
 
 /* GET home page. */
