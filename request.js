@@ -3,11 +3,11 @@ var Schema = mongoose.Schema;
 
 //module.exports = function() {
 	var requestSchema = new Schema({
-		From: Schema.Types.ObjectId,
-		To: Schema.Types.ObjectId,
-		Description: String,
-		Status: Date,
-		Seen: Boolean
+		from: Schema.Types.ObjectId,
+		to: Schema.Types.ObjectId,
+		description: String,
+		status: Date,
+		seen: Boolean
 	});
 	mongoose.model("requestSchema",requestSchema);
 //	mongoose.connect( 'mongodb://localhost/express-request' );
