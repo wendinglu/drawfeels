@@ -1,4 +1,3 @@
-
 /*
   This script will initialize a local Mongo database
   on your machine so you can do development work.

@@ -3,9 +3,9 @@ var Schema = mongoose.Schema;
 
 module.exports = function() {
 	var memberSchema = new Schema({
-		Name: String,
-		Picture: String,
-		Role: String
+		name: String,
+		picture: String,
+		role: String
 	});
 	mongoose.model("memberSchema",memberSchema);
 	mongoose.connect( 'mongodb://localhost/express-member' );

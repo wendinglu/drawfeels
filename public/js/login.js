@@ -7,11 +7,10 @@ $(document).ready(function() {
       url: url,
       data: $("#loginForm").serialize(),
       success: function(data) {
-        return alert(data);
+        window.location = '/'
       }
     });
 
-    alert("Wrong username or password");
     return false;
   });
 
@@ -21,13 +20,12 @@ $(document).ready(function() {
     $.ajax({
       type: "POST",
       url: url,
-      data: $("newUserForm").serialize(),
+      data: $("#newUserForm").serialize(),
       success: function(data) {
-        return alert(data);
+        window.location = "/users/login"
       }
     });
 
-    alert("Could not create this user");
     return false;
   });
 });
