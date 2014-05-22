@@ -54,8 +54,8 @@ router.post('/sendImage', function(req, res) {
   var imgName = token();
   fs.writeFile('./public/images/drawings/' + imgName + '.png', buf);
   var drawnscheme = new drawingSchema({
-    URL: 'images/drawings/' + imgName + '.png' ,
-    Description: req.body.detail,
+    url: 'images/drawings/' + imgName + '.png' ,
+    description: req.body.detail,
 
   });
   drawnscheme.save( function( err, drawingSchema){

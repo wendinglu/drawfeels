@@ -9,7 +9,7 @@ var sys = require('sys');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express', user: req.session.user });
+  res.render('index', { title: 'Express', family: req.session.family });
 });
 
 /* GET home page. */

@@ -12,19 +12,21 @@ block content
     if drawings.length
       each drawing in drawings
         .drawing-box
-          if drawing.From
-            img.circular-med(src='#{drawing.From.Picture}')
-            span.inlineText drew #{drawing.Description}
-          if drawing.To
+          console.log(BOO)
+          if drawing.from
+            img.circular-med(src='#{drawing.from.picture}')
+            span.inlineText drew #{drawing.description}
+          if drawing.to
             span.inlineText for
-              img.circular-small(src='#{drawing.To.Picture}')
-          img(src='#{drawing.URL}')
+              img.circular-small(src='#{drawing.to.picture}')
+          console.log('#{drawing.url}')
+          img(src='#{drawing.url}')
           .subheading
             span.bold
-              = drawing.title
+              = drawing.desecription
             form(name="draw" method="post" action="/draw")
-              input(type="hidden" name='img' value='#{drawing.URL}')
-              input(type="hidden" name='detail' value='#{drawing.Description}')
+              input(type="hidden" name='img' value='#{drawing.url}')
+              input(type="hidden" name='detail' value='#{drawing.description}')
               input(type="submit" value="Add To Drawing")
             
     else 

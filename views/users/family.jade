@@ -3,4 +3,18 @@ extends ../layout
 block content
   p List of family members
   div
-    user
+    if members.length
+      each member in members
+        p=member
+    else
+      p This family has no members yet, please add one!
+
+  p Add a new family member!
+  form(method="post" action="/users/addMember")
+    p name
+      input(type='text' name='name')
+    p picture url 
+      input(type='text' name='picture')
+    p role 
+      input(type='text' name='role')
+    input(type='submit' value='Add Member!')
