@@ -1,6 +1,7 @@
 
 We implemented the two most critical features of our app so far: the ability to draw or drop an image on a canvas, and to save and publish that drawing to a stream for other users to view. We chose to simply save the image and publish the final image since from our Wizard of Oz tests, users were generally too impatient to view the entire drawing process of each image. We also noticed that certain users preferred to draw their images by hand, so we allowed them to drop an image on the screen. Additionally, this made implementation much easier as well.
 
+
 We chose to save each image as a large image in a stream since we initially want to give emphasis to each drawing (since there aren't many being created). This consideration can change as we get more content postings.
 
 <screen capture of stream and drawing tool side by side>
@@ -19,3 +20,4 @@ Optimize Image Uploading (Onto Canvas) - Right now, the image uploading function
 Music playback - We will add a way to streamline consumption of a picture and its music on the streams page. Some kind of pleasing visual playback would be needed
 
 We will A/B Test how users feel about recorded drawings vs. static drawings, to see if they agree with our WOZ findings.
+
