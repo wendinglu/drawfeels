@@ -17,6 +17,7 @@
     "mongodb": "*",
     "monk": "*",
     "moment": "~2.6.0",
-    "coffee-script": "~1.7.1"
+    "coffee-script": "~1.7.1",
+    "mongoose": "~3.8.10"
   }
 }

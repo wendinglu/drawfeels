@@ -27,6 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.session({secret: '1234567890QWERTY'}));
 
 // Make our db accessible to our router
 app.use(function(req,res,next){
