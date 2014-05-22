@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    h1= title
+    form#formAddUser(name="create",method="post",action="/create")
+        input#inputName(type="text", placeholder="names", name="names")
+        input#inputPword(type="text", placeholder="pword", name="pword")
+        input#inputUsername(type="text", placeholder="username", name="username")
+        input#inputMembername(type="text", placeholder="member", name="member")
+        button#btnSubmit(type="submit") submit
