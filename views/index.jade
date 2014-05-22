@@ -17,9 +17,9 @@ block content
     input(type='submit',value='Submit')
 
   script(type='text/javascript').
-      var myBoard = new DrawingBoard.Board('drawing-container')
+      var myBoard = new DrawingBoard.Board('drawing-container', {droppable: true})
       myBoard.addControl('Download')
-      $('#drawing-form').on('submit', function(e) {
+      $('#formAddUser').on('submit', function(e) {
         var img = myBoard.getImg()
         $(this).find('input[name=image]').val( img )
         myBoard.clearWebStorage()

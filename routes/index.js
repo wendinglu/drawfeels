@@ -5,7 +5,8 @@ var familySchema = mongoose.model('familySchema');
 var express = require('express');
 var router = express.Router();
 
-
+var fs = require('fs');
+var sys = require('sys');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -34,6 +35,7 @@ router.get('/newuser', function(req, res) {
   res.render('newuser', { title: 'Add New User' });
 });
 
+
 router.get('/mongoosetestdisplay', function ( req, res ) {
     familySchema.find( function ( err, familySchema){
     res.render( 'mongoosetestdisplay', {
@@ -43,46 +45,7 @@ router.get('/mongoosetestdisplay', function ( req, res ) {
   });
 });
 
-/* POST to Add User Service 
-router.post('/adduser', function(req, res) {
-	console.log("hi");
 
-    // Set our internal DB variable
-    var db = req.db;
-
-    // Get our form values. These rely on the "name" attributes
-    var title = req.body.title;
-    var date = Date.now();
-    var image = req.body.image;
-    var song = req.body.song;
-    var user = 1; //HACK, will change for support of multiple users
-
-    // Set our collection
-    var collection = db.get('drawingcollection');
-
-    // Submit to the DB
-    collection.insert({
-      "title" : title,
-      "date"  : date,
-      "image" : image,
-      "song"  : song,
-      "user"  : user
-
-    }, function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-      }
-      else {
-          // If it worked, set the header so the address bar doesn't still say /adduser
-          res.location("userlist");
-          // And forward to success page
-          res.redirect("userlist");
-      }
-    });
-});
-
-*/
 
 router.post('/create', function(req, res) {
   new familySchema({

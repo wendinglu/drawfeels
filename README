@@ -1,4 +1,6 @@
-We implemented the two most critical features of our app so far: the ability to draw on a canvas, and to save and publish that drawing to a stream for other users to view. We chose to simply save the image and publish the final image since from our Wizard of Oz tests, users were generally too impatient to view the entire drawing process of each image. Additionally, this made implementation much easier as well.
+
+We implemented the two most critical features of our app so far: the ability to draw or drop an image on a canvas, and to save and publish that drawing to a stream for other users to view. We chose to simply save the image and publish the final image since from our Wizard of Oz tests, users were generally too impatient to view the entire drawing process of each image. We also noticed that certain users preferred to draw their images by hand, so we allowed them to drop an image on the screen. Additionally, this made implementation much easier as well.
+
 
 We chose to save each image as a large image in a stream since we initially want to give emphasis to each drawing (since there aren't many being created). This consideration can change as we get more content postings.
 
@@ -9,6 +11,13 @@ Music is also an important part of being able to express a feeling, and as shown
 Remaining Implementation:
 User Accounts - so users can view photos by friends and control who can see their drawings
 
-Communication system - Users can personally message/reach out to the poster of a drawing
+Communication system - Users can personally message/reach out to the poster of a drawing. There should be some kind of commenting and inbox feature.
 
 Better Drawing System - We learned from our WOz testing that even an advanced drawing app like Paper for the iPad wasn't encouraging the kind of rich abstract drawing that we were hoping for (whereas real paper and pastels tended to). If there is time, we would modify the drawing interface to be much more conducive to the rich colorful drawings people are more inclined to do in real life.
+
+Optimize Image Uploading (Onto Canvas) - Right now, the image uploading functionality of our drawing board only works for desktops because it requires users to drag and drop the image onto the canvas. For ipad users who cannot support concurrent windows, this would not work. Moreover, we would want to allow resizing of the photos that are uploaded.
+
+Music playback - We will add a way to streamline consumption of a picture and its music on the streams page. Some kind of pleasing visual playback would be needed
+
+We will A/B Test how users feel about recorded drawings vs. static drawings, to see if they agree with our WOZ findings.
+
