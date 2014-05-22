@@ -18,7 +18,7 @@ var coffeescript = require('coffee-script/register');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var stream = require('./routes/stream');
-
+var requestDrawing = require('./routes/requestDrawing')
 var draw = require('./routes/draw');
 
 
@@ -41,7 +41,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/stream', stream);
 app.use('/draw', draw)
-
+app.use('/requestDrawing', requestDrawing)
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
