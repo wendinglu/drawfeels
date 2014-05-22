@@ -31,7 +31,7 @@ router.post '/validate', (req, res) ->
       res.send(error, 400) 
     else 
       console.log(req.session)
-      req.session.user = obj.username
+      req.session.user = obj
       console.log(req.session)
       res.send obj, 200
   )
