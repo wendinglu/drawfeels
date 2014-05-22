@@ -9,5 +9,5 @@ var Schema = mongoose.Schema;
 		Members: [Schema.Types.ObjectId]
 	});
 	mongoose.model("familySchema",familySchema);
-	mongoose.connect( 'mongodb://localhost/express-family' );
+	//mongoose.connect( 'mongodb://localhost/express-family' );
 //};

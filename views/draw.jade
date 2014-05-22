@@ -10,11 +10,11 @@ block content
 
   form#formAddUser(name="sendImage",method="post",action="/draw/sendImage")
     img(class="circular-med" src=user.img) 
-    span(id="isdrawing") is drawing
+    span(class="inlineText") is drawing
     if detail
-      input(type='text' id='title-text' name='tile' value=detail onclick="if (this.value == 'something') {this.value = '';}")
+      input(type='text' id='title-text' name='detail' value=detail onclick="if (this.value == 'something') {this.value = '';}")
     else
-      input(type='text' id='title-text' name='tile' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+      input(type='text' id='title-text' name='detail' value='something' onclick="if (this.value == 'something') {this.value = '';}")
     
     
     div(class="literally")
@@ -46,12 +46,11 @@ block content
     != "};"
   != "</script>"
 
-  -var dummy_img = 'images/drawings/lum0z75lmxxswcdih3z4dum9cejqbyb9.png'
 
   script(type='text/javascript').
       
       var preloadedImg = new Image()
-      preloadedImg.src = '#{dummy_img}'
+      preloadedImg.src = '#{img}'
         
 
       $('.literally').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
@@ -61,9 +60,6 @@ block content
           var img = lc.canvasForExport().toDataURL()
           $('#formAddUser').find('input[name=image]').val( img )
           $('#formAddUser').find('input[name=recipients]').val (selected)
-
-          console.log(selected)
-          console.log("done")
       })}})
   
       

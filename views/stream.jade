@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  h1= title
   form(action="/draw")
     input(class="menu_button" type="submit" value="Draw")
   form(action="/draw")
@@ -13,11 +12,20 @@ block content
     if drawings.length
       each drawing in drawings
         .drawing-box
-          img(src=drawing.image)
+          if drawing.From
+            img.circular-med(src='#{drawing.From.Picture}')
+            span.inlineText drew #{drawing.Description}
+          if drawing.To
+            span.inlineText for
+              img.circular-small(src='#{drawing.To.Picture}')
+          img(src='#{drawing.URL}')
           .subheading
             span.bold
               = drawing.title
-            = " posted by: " + drawing.user
+            form(name="draw" method="post" action="/draw")
+              input(type="hidden" name='img' value='#{drawing.URL}')
+              input(type="hidden" name='detail' value='#{drawing.Description}')
+              input(type="submit" value="Add To Drawing")
             
     else 
       p No drawings found

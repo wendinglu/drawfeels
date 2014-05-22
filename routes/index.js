@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var familySchema = mongoose.model('familySchema');
+var familySchema = mongoose.model('drawingSchema');
 
 
 var express = require('express');

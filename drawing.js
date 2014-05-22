@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-module.exports = function() {
+//module.exports = function() {
 	var drawingSchema = new Schema({
 		From: Schema.Types.ObjectId,
 		To: Schema.Types.ObjectId,
@@ -11,5 +11,5 @@ module.exports = function() {
 		Seen: Boolean
 	});
 	mongoose.model("drawingSchema",drawingSchema);
-	mongoose.connect( 'mongodb://localhost/express-drawing' );
-};
+	//mongoose.connect( 'mongodb://localhost/express-drawing' );
+//};
