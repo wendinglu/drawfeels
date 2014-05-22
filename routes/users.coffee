@@ -10,7 +10,7 @@ memberSchema = mongoose.model('memberSchema');
 #TODO: Make this lead to a list of family members?
 router.get '/', (req, res) ->
   if req.session.family
-    res.render 'users/family', {family: res.session.family}
+    res.render 'users/family', {family: req.session.family}
   else
     res.render 'users/login', {}
 
@@ -26,13 +26,27 @@ router.get '/new', (req, res) ->
 
 router.get '/family', (req, res) ->
   console.log "Listing family members"
-  members = req.session.family.members
-
-
-  res.render( 'users/family', {
-      title : 'Family Members',
-      'members' : members
-  });
+  
+  renderMembers = (id, callback) ->
+    console.log("finding #{id}")
+    familySchema.findOne({_id: id}, (err, doc) ->
+      if (err)
+        callback(err, null)
+      else
+        callback(null, doc)
+    )
+  
+  renderMembers req.session.family._id, (err, family) ->
+    if (err)
+      console.log(err)
+    else
+      if family
+        res.render( 'users/family', {
+            title : 'Family Members',
+            'members' : family.members
+        })
+      else
+        res.send(400)
 
 router.post '/addMember', (req, res) ->
   name = req.param 'name'
@@ -44,23 +58,31 @@ router.post '/addMember', (req, res) ->
     picture: picture
     role: role
   )
-  memberModel = memberSchema;
+
+  console.log "Adding member to session:"
+  console.log req.session
+
   newMember.save (err, newObj) ->
     if (err)
+      console.log("Could not create new family member")
       res.send(err, 400)
     else
-      familySchema.findByIdAndUpdate(
-        req.session.family.id,
-        $push:
-          members: newObj.id,
-        safe: true
-        upsert: true,
-        (err, model) ->
-          if (err)
-            console.log('adding failed: ' + err)
-          else
-            res.redirect 'users/family'
-      );
+      console.log("created new family member")
+
+  console.log ("Looking to update id: #{req.session.family._id}")
+  familySchema.findByIdAndUpdate(req.session.family._id,
+    $push:
+      members: newMember.id,
+    safe: true
+    upsert: true,
+    (err, model) ->
+      if (err)
+        console.log('adding failed: ' + err)
+        res.send(err, 400)
+      else
+        console.log('succeed in appending')
+        res.redirect('/users/family')
+  );
   
 
 #submit password
