@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  form#newUserForm(action='create', method='post')
+    input(type='text', name='username', placeholder='user name')
+    input(type='text', name='name', placeholder='family name')
+    input(type='password', name='password', placeholder='password')
+    input(type='submit', name='create user')
+
+  script(src="/js/login.js")
