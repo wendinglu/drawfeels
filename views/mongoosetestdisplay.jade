@@ -1,0 +1,10 @@
+block content
+    h1.
+        Family List
+    ul
+        each user, i in family
+            li
+                h4 Name: #{user.Name}
+                h4 Pword: #{user.Pword}
+                h4 Username: #{user.Username}
+                h4 MemberIDs: #{user.Members}
