@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  form#loginForm
+    input(type='text', name='username')
+    input(type='password', name='password')
+    input(type='submit')
+  p
+    a(href='/users/new') Create a new user
+
+  script(src="/js/login.js")
