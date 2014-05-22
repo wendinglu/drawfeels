@@ -2,6 +2,11 @@ extends layout
 
 block content
   h1= title
+  form(action="/draw")
+    input(class="menu_button" type="submit" value="Draw")
+  form(action="/draw")
+    input(class="menu_button" type="submit" value="Request")
+  div(id="requests-div")
   p Recently Drawn Images
 
   .container

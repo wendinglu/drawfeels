@@ -11,7 +11,11 @@ block content
   form#formAddUser(name="sendImage",method="post",action="/draw/sendImage")
     img(class="circular-med" src=user.img) 
     span(id="isdrawing") is drawing
-    input(type='text' id='title-text' name='tile' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+    if detail
+      input(type='text' id='title-text' name='tile' value=detail onclick="if (this.value == 'something') {this.value = '';}")
+    else
+      input(type='text' id='title-text' name='tile' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+    
     
     div(class="literally")
       canvas
@@ -42,16 +46,26 @@ block content
     != "};"
   != "</script>"
 
+  -var dummy_img = 'images/drawings/lum0z75lmxxswcdih3z4dum9cejqbyb9.png'
+
   script(type='text/javascript').
-      $('.literally').literallycanvas({imageURLPrefix: 'images/icons', 
-      onInit: function(lc) { $('[data-action=publish]').click(function(e) {
-        var img = lc.canvasForExport().toDataURL()
-        $('#formAddUser').find('input[name=image]').val( img )
-        $('#formAddUser').find('input[name=recipients]').val (selected)
-        console.log(selected)
-        console.log("done")
-      })}})
       
+      var preloadedImg = new Image()
+      preloadedImg.src = '#{dummy_img}'
+        
+
+      $('.literally').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
+      onInit: function(lc) { 
+        $('[data-action=publish]').click(function(e) {
+        
+          var img = lc.canvasForExport().toDataURL()
+          $('#formAddUser').find('input[name=image]').val( img )
+          $('#formAddUser').find('input[name=recipients]').val (selected)
+
+          console.log(selected)
+          console.log("done")
+      })}})
+  
       
       
       
