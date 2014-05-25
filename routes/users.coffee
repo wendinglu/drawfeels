@@ -4,56 +4,51 @@ accountManager = require './account-manager'
 
 
 mongoose = require('mongoose');
-familySchema = mongoose.model('familySchema');
-memberSchema = mongoose.model('memberSchema');
+Family = mongoose.model('familySchema');
+Member = mongoose.model('memberSchema');
 
-#TODO: Make this lead to a list of family members?
+#main page links to login or choose family members
 router.get '/', (req, res) ->
   if req.session.family
-    res.render 'users/family', {family: req.session.family}
+    res.redirect 'users/members'
   else
     res.render 'users/login', {}
 
-router.get '/login', (req, res) ->
-  if req.session.family
-    res.render 'users/login', {error: "Already logged in"}
-  else
-    res.render 'users/login', {}
-
-router.get '/new', (req, res) ->
-  console.log "Creating new user"
-  res.render 'users/new'
-
+# Family functions =======================
+# List of family members
 router.get '/family', (req, res) ->
   console.log "Listing family members"
   
   renderMembers = (id, callback) ->
-    console.log("finding #{id}")
-    familySchema.findOne({_id: id}, (err, doc) ->
+    console.log("finding mebers of user: #{id}")
+    Family.findOne({_id: id}, (err, family) ->
       if (err)
         callback(err, null)
       else
-        callback(null, doc)
+        Member.where({_id: {$in: family.members}}).exec(callback)
     )
   
-  renderMembers req.session.family._id, (err, family) ->
+  renderMembers req.session.family._id, (err, members) ->
     if (err)
       console.log(err)
     else
-      if family
+      console.log ("Members found are:")
+      console.log (members)
+      if members
         res.render( 'users/family', {
-            title : 'Family Members',
-            'members' : family.members
+          title : 'Family Members',
+          'members' : members
         })
       else
         res.send(400)
 
+# Create family member
 router.post '/addMember', (req, res) ->
   name = req.param 'name'
   picture = req.param 'picture'
   role = req.param 'role'
 
-  newMember = new memberSchema(
+  newMember = new Member(
     name: name
     picture: picture
     role: role
@@ -70,7 +65,7 @@ router.post '/addMember', (req, res) ->
       console.log("created new family member")
 
   console.log ("Looking to update id: #{req.session.family._id}")
-  familySchema.findByIdAndUpdate(req.session.family._id,
+  Family.findByIdAndUpdate(req.session.family._id,
     $push:
       members: newMember.id,
     safe: true
@@ -83,13 +78,23 @@ router.post '/addMember', (req, res) ->
         console.log('succeed in appending')
         res.redirect('/users/family')
   );
-  
 
-#submit password
+#Login as family member
+router.post '/chooseMember', (req, res) ->
+
+
+#=== Login and signup =========
+#Login validation
+router.get '/login', (req, res) ->
+  if req.session.family
+    res.render 'users/login', {error: "Already logged in"}
+  else
+    res.render 'users/login', {}
+
 router.post '/validate', (req, res) ->
   user = req.param "username"
   password = req.param "password"
-  familySchema.findOne({username: user, pword: password}, (error, obj) ->
+  Family.findOne({username: user, pword: password}, (error, obj) ->
     if !obj
       res.send(error, 400) 
     else 
@@ -97,13 +102,17 @@ router.post '/validate', (req, res) ->
       res.send obj, 200
   )
 
-#submit new user add
+#Create new account
+router.get '/new', (req, res) ->
+  console.log "Creating new user"
+  res.render 'users/new'
+
 router.post '/create', (req, res) ->
   name = req.param 'name'
   username = req.param 'username'
   password = req.param 'password'
 
-  newUser = new familySchema(
+  newUser = new Family(
     name: name
     username: username
     pword: password

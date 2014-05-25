@@ -5,7 +5,14 @@ block content
   div
     if members && members.length
       each member in members
-        p=member
+        div(class='profile-box')
+          =member
+          img(src=member.picture)
+          div(class='name')
+            =member.name
+          div(class='role')
+            =member.role
+
     else
       p This family has no members yet, please add one!
 
