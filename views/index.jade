@@ -5,11 +5,12 @@ block content
   link(rel='stylesheet', href='stylesheets/drawingboard.min.css')
   script(src='/js/drawingboard.min.js')
 
-  if family
-    p= 'Current logged in as ' + family.username
+  if family && member
+    p= 'Currently logged in as ' + member.name + ' from ' + family.username
   else
     p not logged in
     a(href="/users/login") login
+    a(href="/users/family") choose family member
 
   form#formAddUser(name="adduser",method="post",action="/adduser")
     

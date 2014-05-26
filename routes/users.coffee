@@ -10,37 +10,40 @@ Member = mongoose.model('memberSchema');
 #main page links to login or choose family members
 router.get '/', (req, res) ->
   if req.session.family
-    res.redirect 'users/members'
+    res.redirect 'members'
   else
     res.render 'users/login', {}
 
 # Family functions =======================
 # List of family members
 router.get '/family', (req, res) ->
-  console.log "Listing family members"
-  
-  renderMembers = (id, callback) ->
-    console.log("finding mebers of user: #{id}")
-    Family.findOne({_id: id}, (err, family) ->
+  if !req.session.family
+    res.redirect 'login'
+  else
+    console.log "Listing family members"
+    renderMembers = (id, callback) ->
+      console.log("finding mebers of user: #{id}")
+      Family.findOne({_id: id}, (err, family) ->
+        if (err)
+          callback(err, null)
+        else
+          Member.where({_id: {$in: family.members}}).exec(callback)
+      )
+    
+    renderMembers req.session.family._id, (err, members) ->
       if (err)
-        callback(err, null)
+        console.log(err)
       else
-        Member.where({_id: {$in: family.members}}).exec(callback)
-    )
-  
-  renderMembers req.session.family._id, (err, members) ->
-    if (err)
-      console.log(err)
-    else
-      console.log ("Members found are:")
-      console.log (members)
-      if members
-        res.render( 'users/family', {
-          title : 'Family Members',
-          'members' : members
-        })
-      else
-        res.send(400)
+        console.log ("Members found are:")
+        console.log (members)
+        if members
+          res.render( 'users/family', {
+            title : 'Family Members',
+            'members' : members
+          })
+        else
+          res.send(400)
+
 
 # Create family member
 router.post '/addMember', (req, res) ->
@@ -80,9 +83,23 @@ router.post '/addMember', (req, res) ->
   );
 
 #Login as family member
-router.post '/chooseMember', (req, res) ->
+router.get '/chooseMember', (req, res) ->
+  if req.session.family && req.session.family.members.indexOf(req.query.id) > -1
+      Member.findOne({_id: req.query.id}, (error, obj) ->
+        if !obj
+          console.log("Member not found")
+          res.send(error, 400)
+        else
+          console.log("Logging in as " + obj.name)
+          req.session.member = obj
+          res.redirect('/')
+      )
+  else
+    res.redirect('login')
 
-
+router.get '/test', (req, res) ->
+  res.redirect('/')
+  
 #=== Login and signup =========
 #Login validation
 router.get '/login', (req, res) ->
