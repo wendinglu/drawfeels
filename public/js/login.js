@@ -7,7 +7,7 @@ $(document).ready(function() {
       url: url,
       data: $("#loginForm").serialize(),
       success: function(data) {
-        window.location = '/'
+        window.location = '/users/family'
       }
     });
 

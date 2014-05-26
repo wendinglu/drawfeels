@@ -5,16 +5,34 @@ block content
   div
     if members && members.length
       each member in members
-        p=member
+        div(class='profile-box' data-id=member._id)
+          =member
+          img(src=member.picture)
+          div(class='name')
+            =member.name
+          div(class='role')
+            =member.role
+
     else
       p This family has no members yet, please add one!
 
   p Add a new family member!
   form(method="post" action="addMember")
-    p name
-      input(type='text' name='name')
-    p picture url 
-      input(type='text' name='picture')
-    p role 
-      input(type='text' name='role')
-    input(type='submit' value='Add Member!')
+    table
+      tr
+        td name
+        td
+          input(type='text' name='name')
+      tr
+        td picture url 
+        td 
+          input(type='text' name='picture')
+      tr
+        td role 
+        td 
+          input(type='text' name='role')
+      tr
+        td
+          input(type='submit' value='Add Member!')
+
+  script(src="/js/users-family.js")
