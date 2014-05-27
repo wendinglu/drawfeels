@@ -12,25 +12,30 @@ block content
     input(type='submit' data-action='sendReq' value='Send Request')
 
   != "<script type='text/javascript'>"
-  != "var selected = [];"
-  each mem in members
-    != "var member_img = document.createElement('img');"
-    != "member_img.src = '" + mem.img+ "';"
-    != "$(member_img).addClass('circular-small');"
-    != "$('#requestFrom').append(member_img);"
-    != "member_img.onclick = function(){"
-      != "if(this.style.opacity == 1){"
-        != "this.style.opacity = .5;"
-        != "selected.splice(selected.indexOf({'img':'"+mem.img+"'}), 1);" 
-      != "} else {"
-        != "this.style.opacity = 1;"
-        != "selected.push({'img':'"+ mem.img +"'})"
-      != "}"
-      != "console.log(selected);"
-    != "};"
+  != "var rcpnts = [];"
+  each m in members
+    if m._id != user._id
+      != "console.log('found member');"
+      != "var member_img = document.createElement('img');"
+      != "member_img.src = '" + m.picture + "';"
+      != "$(member_img).addClass('circular-small');"
+      if rcpnt && m._id == rcpnt
+        != "rcpnts.push('" + rcpnt + "');"
+        != "member_img.style.opacity = 1;"
+      != "$('#requestFrom').append(member_img);"
+      != "member_img.onclick = function(){"
+        != "if(this.style.opacity == 1){"
+          != "this.style.opacity = .5;"
+          != "rcpnts.splice(rcpnts.indexOf('"+ m._id +"'), 1);" 
+        != "} else {"
+          != "this.style.opacity = 1;"
+          != "rcpnts.push('"+ m._id + "');"
+        != "}"
+        != "console.log(rcpnts);"
+      != "};"
   != "</script>"
 
   script.
     $('[data-action=sendReq]').click(function(e) {
-      $('#formAddUser').find('input[name=recipients]').val (selected)
+      $('#formAddUser').find('input[name=recipients]').val (rcpnts)
     });
