@@ -3,34 +3,47 @@ extends layout
 block content
   script(src='/js/jquery-1.11.1.min.js')
 
-  form(method="post" action="postRequest")
-    h2 Ask
-      div#requestFrom
-    h3 to draw you
-    input(type='hidden' name='recipients')
-    input(type='text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
-    input(type='submit' data-action='sendReq' value='Send Request')
+  if title == 'Request Status'
+    if success
+      h1 Your request has been sent!
+    else
+      h1 :( Your request has failed.
+      p #{err}
+  else
+    form(id="requestForm" method="post" action="/requestDrawing/postRequest")
+      h2 Ask
+        div#requestFrom
+      h3 to draw you
+      input(type='hidden' name='recipients')
+      input(type='text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+      input(type='submit' data-action='sendReq' value='Send Request')
 
-  != "<script type='text/javascript'>"
-  != "var selected = [];"
-  each mem in members
-    != "var member_img = document.createElement('img');"
-    != "member_img.src = '" + mem.img+ "';"
-    != "$(member_img).addClass('circular-small');"
-    != "$('#requestFrom').append(member_img);"
-    != "member_img.onclick = function(){"
-      != "if(this.style.opacity == 1){"
-        != "this.style.opacity = .5;"
-        != "selected.splice(selected.indexOf({'img':'"+mem.img+"'}), 1);" 
-      != "} else {"
-        != "this.style.opacity = 1;"
-        != "selected.push({'img':'"+ mem.img +"'})"
-      != "}"
-      != "console.log(selected);"
-    != "};"
-  != "</script>"
+    != "<script type='text/javascript'>"
+    != "var rcpnts = [];"
+    each m in members
+      if m._id != user._id
+        != "console.log('found member');"
+        != "var member_img = document.createElement('img');"
+        != "member_img.src = '" + m.picture + "';"
+        != "$(member_img).addClass('circular-small');"
+        if rcpnt && m._id == rcpnt
+          != "rcpnts.push('" + rcpnt + "');"
+          != "member_img.style.opacity = 1;"
+        != "$('#requestFrom').append(member_img);"
+        != "member_img.onclick = function(){"
+          != "if(this.style.opacity == 1){"
+            != "this.style.opacity = .5;"
+            != "rcpnts.splice(rcpnts.indexOf('"+ m._id +"'), 1);" 
+          != "} else {"
+            != "this.style.opacity = 1;"
+            != "rcpnts.push('"+ m._id + "');"
+          != "}"
+          != "console.log(rcpnts);"
+        != "};"
+    != "</script>"
 
-  script.
-    $('[data-action=sendReq]').click(function(e) {
-      $('#formAddUser').find('input[name=recipients]').val (selected)
-    });
+    script.
+      $('[data-action=sendReq]').click(function(e) {
+        console.log(rcpnts)
+        $('#requestForm').find('input[name=recipients]').val (rcpnts)
+      });
