@@ -119,8 +119,8 @@ router.post('/sendImage', function(req, res) {
           else res.redirect('/stream')
         }
       );
-    } else
-      res.redirect('/stream');
+    } 
+    else res.redirect('/stream');
   });
 
   

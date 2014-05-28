@@ -94,7 +94,7 @@ router.get '/chooseMember', (req, res) ->
         else
           console.log("Logging in as " + obj.name)
           req.session.member = obj
-          res.redirect('/')
+          res.redirect('/stream')
       )
   else
     res.redirect('login')
