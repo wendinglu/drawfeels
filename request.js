@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 //module.exports = function() {
 	var requestSchema = new Schema({
 		from: Schema.Types.ObjectId,
-		to: Schema.Types.ObjectId,
+		to: [Schema.Types.ObjectId],
 		description: String,
 		status: Date,
 		seen: Boolean

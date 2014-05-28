@@ -18,7 +18,6 @@ var renderMembers = function(id, callback) {
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  var db = req.db;
   var current_user = req.session.member;
   
   renderMembers(req.session.family._id, function(err, members){
@@ -37,6 +36,23 @@ router.get('/', function(req, res) {
 });
 
 router.post('/postRequest', function(req, res) {
+  var current_user = req.session.member;
+  var recipients = req.body.recipients.split(',');
+  var date = new Date().getTime();
+
+  var newRequest = new Request({
+    from: current_user._id,
+    to: recipients,
+    description: req.body.description,
+    status: date,
+    seen: false
+  });
+
+  newRequest.save(function(err, model){
+    if(err) return res.render('requestDrawing', {title:'Request Status', 'success':false, 'err': err});
+    res.render('requestDrawing', {title:'Request Status', 'success':true });
+  });
+
   
 });
 
