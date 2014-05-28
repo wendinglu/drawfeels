@@ -22,6 +22,8 @@ block content
 
     input(type='hidden' name='image')
     input(type='hidden' name='request' value=request)
+    br
+    p#noRecErr(style="visibility: hidden; color: red;") Please choose at least 1 recipient!
     div(id="send-to")
     input(type='hidden' name='sendTo')
 
@@ -60,14 +62,15 @@ block content
     $('.literally').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
     onInit: function(lc) { 
       $('[data-action=publish]').click(function(e) {
-        //if (rcpnts.length)
-        console.log('clicked submit')
-      
-        var img = lc.canvasForExport().toDataURL()
-        $('#addDrawing').find('input[name=image]').val( img )
-        var rcpntsStr = rcpnts.toString();
-        console.log(rcpntsStr);
-        $('#addDrawing').find('input[name=sendTo]').val (rcpnts);
+        if (rcpnts.length){
+          var img = lc.canvasForExport().toDataURL()
+          $('#addDrawing').find('input[name=image]').val( img )
+          var rcpntsStr = rcpnts.toString();
+          $('#addDrawing').find('input[name=sendTo]').val (rcpnts);
+        } else {
+          document.getElementById('noRecErr').style.visibility = "visible";
+          e.preventDefault();        
+        }
     })}})
   
       
