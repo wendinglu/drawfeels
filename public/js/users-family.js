@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $('.profile-box').click(function() {
-    debugger;
+    $(this).addClass('active');
     window.location = 'chooseMember?id=' + $(this).data('id').replace(/\"/g, "");
   });
 
