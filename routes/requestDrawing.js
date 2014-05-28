@@ -45,8 +45,9 @@ router.post('/postRequest', function(req, res) {
     to: recipients,
     description: req.body.description,
     status: date,
-    seen: false
+    active: recipients
   });
+  //maybe add a response field that is an image id
 
   newRequest.save(function(err, model){
     if(err) return res.render('requestDrawing', {title:'Request Status', 'success':false, 'err': err});
@@ -55,6 +56,7 @@ router.post('/postRequest', function(req, res) {
 
   
 });
+
 
 module.exports = router;
 

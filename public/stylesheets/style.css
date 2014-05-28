@@ -46,3 +46,15 @@ a {
   display: inline;
 }
 
+.streamFeed{
+  position: absolute;
+}
+
+#selfFeed{
+  z-index: 2;
+}
+
+#everyoneFeed{
+  z-index: 1;
+  visibility: hidden;
+}
