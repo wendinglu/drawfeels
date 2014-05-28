@@ -106,6 +106,9 @@ a {
 .desc {
   color: blue;
 }
+.error {
+  color: red;
+}
 
 .invis {
   visibility: hidden;

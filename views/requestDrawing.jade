@@ -1,24 +1,29 @@
 extends layout
 
 block content
-  script(src='/js/jquery-1.11.1.min.js')
-
   if title == 'Request Status'
     if success
       h1 Your request has been sent!
       a(href="/requestDrawing" class="btn btn-lg btn-success") Request Another Drawing!
     else
       h1 :( Your request has failed.
-      p #{err}
+      h4.error #{err}
       a(href="/requestDrawing" class="btn btn-lg btn-danger") Try Again
   else
-    form(id="requestForm" method="post" action="/requestDrawing/postRequest")
-      h2 Ask
-        div#requestFrom
-      h3 to draw you
-      input(type='hidden' name='recipients')
-      input(type='text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
-      input(type='submit' data-action='sendReq' value='Send Request')
+    .container.fluid
+      form(id="requestForm" method="post" action="/requestDrawing/postRequest")
+      .row
+        .col-xs-12
+          h2 Ask
+          #requestFrom.section
+          h3 to draw you
+      .row
+        .col-xs-11
+          input(type='hidden' name='recipients')
+          input(type='text' class='form-control' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+        .col-xs-1
+          button(type='submit' class='btn btn-default btn-sm' data-action='sendReq')
+            span.glyphicon.glyphicon-arrow-right
 
     != "<script type='text/javascript'>"
     != "var rcpnts = [];"
