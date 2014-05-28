@@ -7,27 +7,31 @@ block content
 
   if family && member
     p= 'Currently logged in as ' + member.name + ' from ' + family.username
+
+    form#formAddUser(name="adduser",method="post",action="/adduser")
+      
+      input#inputTitle(type="text", placeholder="Drawing Title", name="title")
+      input#inputSong(type="text", placeholder="song", name="song")
+      div(id="drawing-container")
+
+      div
+        input(type='hidden' name='image' value='')
+      div
+        input(type='submit',value='Submit')
+
   else
-    p not logged in
-    a(href="/users/login") login
-    a(href="/users/family") choose family member
-
-  form#formAddUser(name="adduser",method="post",action="/adduser")
-    
-    input#inputTitle(type="text", placeholder="Drawing Title", name="title")
-    input#inputSong(type="text", placeholder="song", name="song")
-    div(id="drawing-container")
-
-    input(type='hidden' name='image' value='')
-
-    input(type='submit',value='Submit')
+    h1 Who are you?
+    div(class='section')
+      a(role='button' class='btn btn-default btn-lg' href='/users/login') Login
+      a(role='button' class='btn btn-default btn-lg' href='/users/family') Choose Who You Are
 
   script(type='text/javascript').
-      var myBoard = new DrawingBoard.Board('drawing-container', {droppable: true})
-      myBoard.addControl('Download')
+    if ($('#drawing-container').length) {
+      var myBoard = new DrawingBoard.Board('drawing-container', {droppable: true});
+      myBoard.addControl('Download');
       $('#formAddUser').on('submit', function(e) {
         var img = myBoard.getImg()
         $(this).find('input[name=image]').val( img )
         myBoard.clearWebStorage()
-      })
-
+      });
+    }

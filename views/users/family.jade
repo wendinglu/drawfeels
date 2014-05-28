@@ -1,38 +1,42 @@
 extends ../layout
 
 block content
-  p List of family members
-  div
+  div(class='container')
+    h2 Who Are You?
     if members && members.length
-      each member in members
-        div(class='profile-box' data-id=member._id)
-          =member
-          img(src=member.picture)
-          div(class='name')
-            =member.name
-          div(class='role')
-            =member.role
+      each member, i in members
+        if i % 4 == 0
+          | <div class='row'>
 
-    else
-      p This family has no members yet, please add one!
+        div(class='profile-box col-sm-3' data-id=member._id)
+          div(class='profile-box-inner')
+            div(class='profile-box-image')
+              img(src=member.picture)
+            div(class='name')
+              h2=member.name
+            div(class='role')
+              h4=member.role
 
-  p Add a new family member!
-  form(method="post" action="addMember")
-    table
-      tr
-        td name
-        td
-          input(type='text' name='name')
-      tr
-        td picture url 
-        td 
-          input(type='text' name='picture')
-      tr
-        td role 
-        td 
-          input(type='text' name='role')
-      tr
-        td
-          input(type='submit' value='Add Member!')
+        if i % 4 == 3 || i == members.length - 1
+          | </div>
+
+      else
+        p This family has no members yet, please add one!
+
+    div(class='row')
+      div(class='col-sm-6')
+        h3 Add a new family member!
+        form(method="post" action="addMember" role='form')
+          div(class='form-group')
+            label(for='name') Name
+            input(type='text' class='form-control' name='name' placeholder='Name')
+          div(class='form-group')
+            label(for='picture') Picture
+            input(type='text' class='form-control' name='picture' placeholder='URL of their picture')
+          div(class='form-group')
+            label(for='role') Description
+            input(type='text' class='form-control' name='role' placeholder='e.g. Mom, Dad, Aunt')
+
+          button(type='submit' class='btn btn-primary btn-lg') Add
 
   script(src="/js/users-family.js")
