@@ -8,7 +8,8 @@ var Schema = mongoose.Schema;
 		url: String,
 		description: String,
 		created: Date,
-		seen: Boolean
+		seen: Boolean,
+    request: Schema.Types.ObjectId
 	});
 	mongoose.model("drawingSchema",drawingSchema);
 	//mongoose.connect( 'mongodb://localhost/express-drawing' );

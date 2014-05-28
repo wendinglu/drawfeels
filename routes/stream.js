@@ -9,7 +9,7 @@ var Request = mongoose.model('requestSchema')
 router.get('/', function(req, res) {
   //want a list 
 
-  Request.find({to: req.session.member._id}, function(err, requestsFound){
+  Request.find({to: req.session.member._id, active: req.session.member._id}, function(err, requestsFound){
     if (err) return console.log(err);
     console.log(requestsFound);
     Drawing.find( function ( err, drawingsFound){

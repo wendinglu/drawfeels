@@ -3,7 +3,7 @@ extends layout
 block content
   a(href="/draw" class="btn btn-lg btn-primary") Draw Something!
   a(id="drawReqButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#drawReqModal") Request Drawing
-  a(id="drawReqButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#reqResModal") Your Requests&nbsp;
+  a(id="drawReqButton" href="#" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#reqResModal") Your Requests:&nbsp;
     span#numReqs(style="bold")
   div(id="requests-div")
   p Recently Drawn Images

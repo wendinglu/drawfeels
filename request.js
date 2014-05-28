@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 		to: [Schema.Types.ObjectId],
 		description: String,
 		status: Date,
-		seen: Boolean
+		active: [Schema.Types.ObjectId]
 	});
 	mongoose.model("requestSchema",requestSchema);
 //	mongoose.connect( 'mongodb://localhost/express-request' );
