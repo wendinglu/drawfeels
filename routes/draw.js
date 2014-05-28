@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 var Family = mongoose.model('familySchema');
 var Drawing = mongoose.model('drawingSchema');
 var Member = mongoose.model('memberSchema');
+var Request = mongoose.model('requestSchema');
+
 mongoose.connect( 'mongodb://localhost/express-family' );
 
 var renderMembers = function(id, callback) {
@@ -52,6 +54,7 @@ router.post('/', function(req, res) {
   var background = req.body.img; 
   var rcpnt = req.body.recipient;
   var description = req.body.description;
+  var request = req.body.request;
 
   renderMembers(req.session.family._id, function(err, members){
     if(err)
@@ -66,7 +69,8 @@ router.post('/', function(req, res) {
         'user': current_user,
         'background': background,
         'rcpnt': rcpnt,
-        'description': description
+        'description': description,
+        'request': request
       });
     }
   });
@@ -87,6 +91,7 @@ router.post('/sendImage', function(req, res) {
   var imgData = img.replace(/^data:image\/\w+;base64,/, "");
   var buf = new Buffer(imgData, 'base64');
   var imgName = token();
+  
   fs.writeFile('./public/images/drawings/' + imgName + '.png', buf);
   // created at Date
   var date = new Date().getTime();
@@ -97,13 +102,25 @@ router.post('/sendImage', function(req, res) {
     to: recipients,
     url: 'images/drawings/' + imgName + '.png' ,
     description: req.body.description,
+    request: req.body.request,
     created: date
   });
 
-  newDrawing.save( function( err, drawingSchema){
+  newDrawing.save( function( err, drawing){
     if (err) return console.error(err);
-    console.log(drawing);
-    res.redirect('/stream');
+    console.log(newDrawing);
+    if (drawing.request) {
+      Request.findByIdAndUpdate(
+        drawing.request,
+        {$set: {_id: drawing.request}, $pull: {active: req.session.member._id}},
+        {safe: true, upsert: true},
+        function(err, model) {
+          if (err) return console.log(err);
+          else res.redirect('/stream')
+        }
+      );
+    } else
+      res.redirect('/stream');
   });
 
   

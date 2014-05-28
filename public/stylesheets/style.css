@@ -80,4 +80,16 @@ a {
 }
 .profile-box img {
   max-width: 100%;
+
+.streamFeed {
+  position: absolute;
+}
+
+#selfFeed{
+  z-index: 2;
+}
+
+#everyoneFeed{
+  z-index: 1;
+  visibility: hidden;
 }

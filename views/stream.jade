@@ -2,9 +2,58 @@ extends layout
 
 block content
   a(href="/draw" class="btn btn-lg btn-primary") Draw Something!
-  a(href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#drawReqModal") Request Drawing
+  a(id="drawReqButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#drawReqModal") Request Drawing
+  a(id="drawReqButton" href="#" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#reqResModal") Your Requests:&nbsp;
+    span#numReqs(style="bold")
   div(id="requests-div")
   p Recently Drawn Images
+    br
+    a(href="#" id="userDrawings") Drawings to and From You
+    span &nbsp;|&nbsp;
+    a(href="#" id="familyDrawings") Everybody's Drawings
+  div#everyoneFeed(class="streamFeed")
+    if drawings.length
+      each drawing in drawings
+        .drawing-box
+          if drawing.from && drawing.to
+            img.circular-small(src='#{membersTable[drawing.from].picture}' style='opacity: 1;')
+            h2.inlineText &nbsp;--->&nbsp;
+            each rec in drawing.to
+              img.circular-small(src='#{membersTable[rec].picture}' style="opacity: 1;")
+            br
+            img(src='#{drawing.url}')
+            .subheading
+              span.bold #{drawing.description}
+              form(name="draw" method="post" action="/draw")
+                input(type="hidden" name='img' value='#{drawing.url}')
+                input(type="hidden" name='description' value='#{drawing.description}')
+                input(type="hidden" name='recipient' value='#{drawing.from}')
+                input(type="submit" value="Add To Drawing")
+            
+    else 
+      p No drawings found
+
+  div#selfFeed(class="streamFeed")
+    if drawings.length
+      each drawing in drawings
+        .drawing-box
+          if drawing.from == user._id || drawing.to.indexOf(user._id) >= 0
+            img.circular-small(src='#{membersTable[drawing.from].picture}' style='opacity: 1;')
+            h2.inlineText &nbsp;--->&nbsp;
+            each rec in drawing.to
+              img.circular-small(src='#{membersTable[rec].picture}' style="opacity: 1;")
+            br
+            img(src='#{drawing.url}')
+            .subheading
+              span.bold #{drawing.description}
+              form(name="draw" method="post" action="/draw")
+                input(type="hidden" name='img' value='#{drawing.url}')
+                input(type="hidden" name='description' value='#{drawing.description}')
+                input(type="hidden" name='recipient' value='#{drawing.from}')
+                input(type="submit" value="Add To Drawing")
+            
+    else 
+      p No drawings found
 
   div(class="modal fade" id="drawReqModal" tabindex="-1" role="dialog" aria-labelledby="drawReqModal" aria-hidden="true")
     div(class="modal-dialog modal-lg")
@@ -17,6 +66,35 @@ block content
         div(class="modal-footer")
           button(type="button" class="btn btn-default" data-dismiss="modal") Done
 
+  div(class="modal fade" id="reqResModal" tabindex="-1" role="dialog" aria-labelledby="reqResModal" aria-hidden="true")
+    div(class="modal-dialog modal-lg")
+      div(class="modal-content")
+        div(class="modal-header")
+          button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+          h4(class="modal-title" id="myModalLabel") Respond to Requests!
+        div(id="req-body" class="modal-body")
+          each req in requests
+            form#reqResponse(name="reqResponse",method="post",action="/draw")
+              input(type="hidden" name="recipient" value=req.from)
+              input(type="hidden" name="description" value=req.description)
+              input(type="hidden" name="request" value=req._id)
+              input(type='submit' value="#{membersTable[req.from].name} requested a #{req.description}")
+        div(class="modal-footer")
+          button(type="button" class="btn btn-default" data-dismiss="modal") Done
+
+  script.
+    document.getElementById('numReqs').innerHTML = '#{requests.length}'
+    document.getElementById('drawReqButton').onclick = function() {
+      document.getElementById('req-frame').src="/requestDrawing"
+    }
+    document.getElementById('familyDrawings').onclick = function() {
+      document.getElementById('everyoneFeed').style.visibility="visible"
+      document.getElementById('selfFeed').style.visibility="hidden"
+    }
+    document.getElementById('userDrawings').onclick = function() {
+      document.getElementById('everyoneFeed').style.visibility="hidden"
+      document.getElementById('selfFeed').style.visibility="visible"
+    }
   
 //
   .container
