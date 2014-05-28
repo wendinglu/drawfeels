@@ -80,6 +80,15 @@ a {
 }
 .profile-box img {
   max-width: 100%;
+}
+
+.big-icon {
+  height: 120px;
+}
+
+.med-icon {
+  height: 80px;
+}
 
 .streamFeed {
   position: absolute;
@@ -92,4 +101,21 @@ a {
 #everyoneFeed{
   z-index: 1;
   visibility: hidden;
+}
+
+.desc {
+  color: blue;
+}
+
+.invis {
+  visibility: hidden;
+}
+
+.drawing-box {
+  border: 1px solid #ccc;
+  padding: 2em;
+}
+
+.fit-img {
+  max-width: 100%;
 }
