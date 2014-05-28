@@ -34,6 +34,7 @@ router.get('/', function(req, res) {
           console.log(membersTable)
           res.render( 'stream', {
             title : 'Picture Stream',
+            user: req.session.member,
             drawings : drawingsFound,
             requests: requestsFound,
             membersTable: membersTable
