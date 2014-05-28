@@ -3,31 +3,37 @@ extends layout
 block content
 
   link(rel='stylesheet', href='stylesheets/literally.css')
-  script(src='/js/jquery-1.11.1.min.js')
+  //- script(src='/js/jquery-1.11.1.min.js')
   script(src='/js/literallycanvas.jquery.js')
 
   //should take in whether or not there is a preset recipient or title (for cases where requests are made)
 
-  form#addDrawing(name="sendImage",method="post",action="/draw/sendImage")
-    img(class="circular-med" src=user.picture) 
-    span(class="inlineText") is drawing
-    if description
-      input(type='text' id='title-text' name='description' value=description)
-    else
-      input(type='text' id='title-text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
-    
-    
-    div(class="literally")
-      canvas
+  div(class='container-fluid')
+    form#addDrawing(name="sendImage",method="post",action="/draw/sendImage")
+      div(class='row')
+        div(class='col-xs-2')
+          img(class="circular-med" src=user.picture) 
+        div(class='col-xs-2') 
+          h3 is drawing
+        div(class='col-xs-8')
+          if description
+            input(class='form-control' type='text' id='title-text' name='description' value=description)
+          else
+            input(class='form-control' type='text' id='title-text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+      
+      div(class="row literally section")
+        canvas
 
-    input(type='hidden' name='image')
-    input(type='hidden' name='request' value=request)
-    br
-    p#noRecErr(style="visibility: hidden; color: red;") Please choose at least 1 recipient!
-    div(id="send-to")
-    input(type='hidden' name='sendTo')
-
-    input(type='submit' data-action="publish" value='Send')
+      div(class='row section')
+        input(type='hidden' name='image')
+      input(type='hidden' name='request' value=request)
+      div(class='row section')
+        p#noRecErr(style="visibility: hidden; color: red;") Please choose at least 1 recipient!
+        div(id="send-to")
+          input(type='hidden' name='sendTo')
+      div(class='row section')
+        button(type='submit' class='button btn-primary btn-lg btn-block' data-action="publish" value='Send')
+          span(class='glyphicon glyphicon-send')
 
   != "<script type='text/javascript'>"
   != "var rcpnts = [];"
@@ -57,7 +63,6 @@ block content
   script(type='text/javascript').
     var preloadedImg = new Image()
     preloadedImg.src = '#{img}'
-      
 
     $('.literally').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
     onInit: function(lc) { 

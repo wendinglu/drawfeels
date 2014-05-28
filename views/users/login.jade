@@ -1,14 +1,21 @@
 extends ../layout
 
 block content
-  if error
-    h2 error
-  else
-    form#loginForm
-      input(type='text', name='username')
-      input(type='password', name='password')
-      input(type='submit')
-    p
-      a(href='/users/new') Create a new user
+  div(class='container')
+    if error
+      h2(class='error') error
+    else
+      div(class='col-sm-6')
+        form#loginForm(role='form')
+          div(class='form-group')
+            label(for='username') Username
+            input(type='text', name='username', class='form-control')
+          div(class='form-group')
+            label(for='password') Password
+            input(type='password', name='password', class='form-control')
+          div(class='form-group')
+            button(type='submit', class='btn btn-primary btn-block') Log In
+          div(class='form-group')
+            a(href='/users/new' class='btn btn-default btn-block') Sign Up
 
-    script(src="/js/login.js")
+  script(src="/js/login.js")
