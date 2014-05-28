@@ -31,7 +31,7 @@ block content
               input(type="hidden" name="recipient" value=req.from)
               input(type="hidden" name="description" value=req.description)
               input(type="hidden" name="request" value=req._id)
-              input(type='submit' value="#{req.from} requested a #{req.description}")
+              input(type='submit' value="#{membersTable[req.from].name} requested a #{req.description}")
         div(class="modal-footer")
           button(type="button" class="btn btn-default" data-dismiss="modal") Done
 

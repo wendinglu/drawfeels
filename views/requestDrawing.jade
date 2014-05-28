@@ -6,9 +6,11 @@ block content
   if title == 'Request Status'
     if success
       h1 Your request has been sent!
+      a(href="/requestDrawing" class="btn btn-lg btn-success") Request Another Drawing!
     else
       h1 :( Your request has failed.
       p #{err}
+      a(href="/requestDrawing" class="btn btn-lg btn-danger") Try Again
   else
     form(id="requestForm" method="post" action="/requestDrawing/postRequest")
       h2 Ask
