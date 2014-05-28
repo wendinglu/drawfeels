@@ -96,15 +96,19 @@ router.post('/sendImage', function(req, res) {
   // created at Date
   var date = new Date().getTime();
   var recipients = req.body.sendTo.split(','); 
-  
-  var newDrawing = new Drawing({
+
+  var properties = {
     from: req.session.member._id,
     to: recipients,
     url: 'images/drawings/' + imgName + '.png' ,
     description: req.body.description,
-    request: req.body.request,
     created: date
-  });
+  }
+
+  if (req.body.request)
+    properties['request'] = req.body.request
+  
+  var newDrawing = new Drawing(properties);
 
   newDrawing.save( function( err, drawing){
     if (err) return console.error(err);

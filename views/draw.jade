@@ -28,6 +28,7 @@ block content
         input(type='hidden' name='image')
       input(type='hidden' name='request' value=request)
       div(class='row section')
+        p#noRecErr(style="visibility: hidden; color: red;") Please choose at least 1 recipient!
         div(id="send-to")
           input(type='hidden' name='sendTo')
       div(class='row section')
@@ -63,22 +64,19 @@ block content
     var preloadedImg = new Image()
     preloadedImg.src = '#{img}'
 
-    $('.literally').literallycanvas({
-      imageURLPrefix: 'images/icons', 
-      watermarkImage: preloadedImg,
-      onInit: function(lc) { 
-        $('[data-action=publish]').click(function(e) {
-          //if (rcpnts.length)
-          console.log('clicked submit')
-        
+    $('.literally').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
+    onInit: function(lc) { 
+      $('[data-action=publish]').click(function(e) {
+        if (rcpnts.length){
           var img = lc.canvasForExport().toDataURL()
           $('#addDrawing').find('input[name=image]').val( img )
           var rcpntsStr = rcpnts.toString();
-          console.log(rcpntsStr);
           $('#addDrawing').find('input[name=sendTo]').val (rcpnts);
-        })
-      }
-    });
+        } else {
+          document.getElementById('noRecErr').style.visibility = "visible";
+          e.preventDefault();        
+        }
+    })}})
   
       
       
