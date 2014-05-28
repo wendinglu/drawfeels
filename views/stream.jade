@@ -2,7 +2,9 @@ extends layout
 
 block content
   a(href="/draw" class="btn btn-lg btn-primary") Draw Something!
-  a(href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#drawReqModal") Request Drawing
+  a(id="drawReqButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#drawReqModal") Request Drawing
+  a(id="drawReqButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#reqResModal") Your Requests&nbsp;
+    span#numReqs(style="bold")
   div(id="requests-div")
   p Recently Drawn Images
 
@@ -17,6 +19,31 @@ block content
         div(class="modal-footer")
           button(type="button" class="btn btn-default" data-dismiss="modal") Done
 
+  div(class="modal fade" id="reqResModal" tabindex="-1" role="dialog" aria-labelledby="reqResModal" aria-hidden="true")
+    div(class="modal-dialog modal-lg")
+      div(class="modal-content")
+        div(class="modal-header")
+          button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+          h4(class="modal-title" id="myModalLabel") Respond to Requests!
+        div(id="req-body" class="modal-body")
+          each req in requests
+            form#reqResponse(name="reqResponse",method="post",action="/draw")
+              input(type="hidden" name="recipient" value=req.from)
+              input(type="hidden" name="description" value=req.description)
+              input(type="hidden" name="request" value=req._id)
+              input(type='submit' value="#{req.from} requested a #{req.description}")
+        div(class="modal-footer")
+          button(type="button" class="btn btn-default" data-dismiss="modal") Done
+
+  script.
+    document.getElementById('numReqs').innerHTML = '#{requests.length}'
+    document.getElementById('drawReqButton').onclick = function() {
+      document.getElementById('req-frame').src="/requestDrawing"
+    }
+
+
+    
+//for each req in requests, create a post form in the modal
   
 //
   .container
@@ -42,3 +69,11 @@ block content
             
     else 
       p No drawings found
+
+      requests is a list where the current user is in the to section
+          each req in requests
+            form#reqResponse(name="reqResponse",method="post",action="/draw")
+              input(type="hidden" name="recipient" value=req.from)
+              input(type="hidden" name="description" value=req.description)
+              input(type="hidden" name="request" value=req._id)
+              input(type='submit') //something like wending asked you to draw a dog
