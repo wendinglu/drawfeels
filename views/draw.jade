@@ -8,59 +8,67 @@ block content
 
   //should take in whether or not there is a preset recipient or title (for cases where requests are made)
 
-  form#formAddUser(name="sendImage",method="post",action="/draw/sendImage")
-    img(class="circular-med" src=user.img) 
+  form#addDrawing(name="sendImage",method="post",action="/draw/sendImage")
+    img(class="circular-med" src=user.picture) 
     span(class="inlineText") is drawing
-    if detail
-      input(type='text' id='title-text' name='detail' value=detail onclick="if (this.value == 'something') {this.value = '';}")
+    if description
+      input(type='text' id='title-text' name='description' value=description)
     else
-      input(type='text' id='title-text' name='detail' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+      input(type='text' id='title-text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
     
     
     div(class="literally")
       canvas
 
-    input(type='hidden' name='image' value='')
+    input(type='hidden' name='image')
 
     div(id="send-to")
-    input(type='hidden' name='recipients' value='')
+    input(type='hidden' name='sendTo')
 
     input(type='submit' data-action="publish" value='Send')
 
   != "<script type='text/javascript'>"
-  != "var selected = [];"
-  each mem in members
-    != "var member_img = document.createElement('img');"
-    != "member_img.src = '" + mem.img+ "';"
-    != "$(member_img).addClass('circular-small');"
-    != "$('#send-to').append(member_img);"
-    != "member_img.onclick = function(){"
-      != "if(this.style.opacity == 1){"
-        != "this.style.opacity = .5;"
-        != "selected.splice(selected.indexOf({'img':'"+mem.img+"'}), 1);" 
-      != "} else {"
-        != "this.style.opacity = 1;"
-        != "selected.push({'img':'"+ mem.img +"'})"
-      != "}"
-      != "console.log(selected);"
-    != "};"
+  != "var rcpnts = [];"
+  each m in members
+    if m._id != user._id
+      != "console.log('found member');"
+      != "var member_img = document.createElement('img');"
+      != "member_img.src = '" + m.picture + "';"
+      != "$(member_img).addClass('circular-small');"
+      if rcpnt && m._id == rcpnt
+        != "rcpnts.push('" + rcpnt + "');"
+        != "member_img.style.opacity = 1;"
+      != "$('#send-to').append(member_img);"
+      != "member_img.onclick = function(){"
+        != "if(this.style.opacity == 1){"
+          != "this.style.opacity = .5;"
+          != "rcpnts.splice(rcpnts.indexOf('"+ m._id +"'), 1);" 
+        != "} else {"
+          != "this.style.opacity = 1;"
+          != "rcpnts.push('"+ m._id + "');"
+        != "}"
+        != "console.log(rcpnts);"
+      != "};"
   != "</script>"
 
 
   script(type='text/javascript').
+    var preloadedImg = new Image()
+    preloadedImg.src = '#{img}'
       
-      var preloadedImg = new Image()
-      preloadedImg.src = '#{img}'
-        
 
-      $('.literally').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
-      onInit: function(lc) { 
-        $('[data-action=publish]').click(function(e) {
-        
-          var img = lc.canvasForExport().toDataURL()
-          $('#formAddUser').find('input[name=image]').val( img )
-          $('#formAddUser').find('input[name=recipients]').val (selected)
-      })}})
+    $('.literally').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
+    onInit: function(lc) { 
+      $('[data-action=publish]').click(function(e) {
+        //if (rcpnts.length)
+        console.log('clicked submit')
+      
+        var img = lc.canvasForExport().toDataURL()
+        $('#addDrawing').find('input[name=image]').val( img )
+        var rcpntsStr = rcpnts.toString();
+        console.log(rcpntsStr);
+        $('#addDrawing').find('input[name=sendTo]').val (rcpnts);
+    })}})
   
       
       

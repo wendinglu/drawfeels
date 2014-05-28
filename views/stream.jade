@@ -1,24 +1,34 @@
 extends layout
 
 block content
-  form(action="/draw")
-    input(class="menu_button" type="submit" value="Draw")
-  form(action="/requestDrawing")
-    input(class="menu_button" type="submit" value="Request")
+  a(href="/draw" class="btn btn-lg btn-primary") Draw Something!
+  a(href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#drawReqModal") Request Drawing
   div(id="requests-div")
   p Recently Drawn Images
 
+  div(class="modal fade" id="drawReqModal" tabindex="-1" role="dialog" aria-labelledby="drawReqModal" aria-hidden="true")
+    div(class="modal-dialog modal-lg")
+      div(class="modal-content")
+        div(class="modal-header")
+          button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+          h4(class="modal-title" id="myModalLabel") Request a drawing!
+        div(id="remote-body" class="modal-body")
+          iframe(id="req-frame" src="/requestDrawing" width="500px" height="300px" style="border:0; margin: 0 auto;" seamless)
+        div(class="modal-footer")
+          button(type="button" class="btn btn-default" data-dismiss="modal") Done
+
+  
+//
   .container
     if drawings.length
       each drawing in drawings
         .drawing-box
           console.log(BOO)
           if drawing.from
-            img.circular-med(src='#{drawing.from.picture}')
+            img.circular-med(src='#{drawing.from}')
             span.inlineText drew #{drawing.description}
           if drawing.to
-            span.inlineText for
-              img.circular-small(src='#{drawing.to.picture}')
+            span.inlineText for some people
           console.log('#{drawing.url}')
           img(src='#{drawing.url}')
           .subheading
@@ -26,7 +36,8 @@ block content
               = drawing.desecription
             form(name="draw" method="post" action="/draw")
               input(type="hidden" name='img' value='#{drawing.url}')
-              input(type="hidden" name='detail' value='#{drawing.description}')
+              input(type="hidden" name='description' value='#{drawing.description}')
+              input(type="hidden" name='recipient' value='#{drawing.from}')
               input(type="submit" value="Add To Drawing")
             
     else 

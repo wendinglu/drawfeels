@@ -69,9 +69,11 @@ router.post '/addMember', (req, res) ->
 
   console.log ("Looking to update id: #{req.session.family._id}")
   Family.findByIdAndUpdate(req.session.family._id,
+    $set: 
+      _id: req.session.family._id,
     $push:
       members: newMember.id,
-    safe: true
+    safe: true,
     upsert: true,
     (err, model) ->
       if (err)
