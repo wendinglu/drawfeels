@@ -8,8 +8,6 @@ var Drawing = mongoose.model('drawingSchema');
 var Member = mongoose.model('memberSchema');
 var Request = mongoose.model('requestSchema');
 
-mongoose.connect( 'mongodb://localhost/express-family' );
-
 var renderMembers = function(id, callback) {
   console.log("finding #{id}");
   Family.findOne({_id: id}, function(err, family){

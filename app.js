@@ -1,7 +1,7 @@
-require('./family');
-require('./member');
-require('./drawing');
-require('./request');
+// require('./family');
+// require('./member');
+// require('./drawing');
+// require('./requests');
 
 var express = require('express');
 var path = require('path');
@@ -11,6 +11,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var coffeescript = require('coffee-script/register');
 var session = require('express-session');
+var db = require('./db');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
