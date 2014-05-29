@@ -136,27 +136,3 @@ block content
       $('#userDrawings').click();
     });
   
-//
-  .container
-    if drawings.length
-      each drawing in drawings
-        .drawing-box
-          console.log(BOO)
-          if drawing.from
-            img.circular-med(src='#{drawing.from}')
-            span.inlineText drew #{drawing.description}
-          if drawing.to
-            span.inlineText for some people
-          console.log('#{drawing.url}')
-          img(src='#{drawing.url}')
-          .subheading
-            span.bold
-              = drawing.desecription
-            form(name="draw" method="post" action="/draw")
-              input(type="hidden" name='img' value='#{drawing.url}')
-              input(type="hidden" name='description' value='#{drawing.description}')
-              input(type="hidden" name='recipient' value='#{drawing.from}')
-              input(type="submit" value="Add To Drawing")
-            
-    else 
-      p No drawings found

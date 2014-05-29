@@ -15,31 +15,39 @@ var renderMembers = function(id, callback) {
       Member.where({_id: {$in: family.members}}).exec(callback);
   });
 }
+
+var renderDrawings = function(id, callback) {
+  Family.findOne({_id: id}, function(err, family){
+    if (err)
+      callback(err, null)
+    else
+      Drawing.where({from: {$in: family.members}}).exec(callback);
+  });
+}
+
 /* GET home page. */
 router.get('/', function(req, res) {
 
   Request.find({to: req.session.member._id, active: req.session.member._id}, function(err, requestsFound){
     if (err) return console.log(err);
     console.log(requestsFound);
-    Drawing.find( function ( err, drawingsFound){
+
+    renderMembers(req.session.family._id, function(err, members){
       if (err) return console.log(err);
-      renderMembers(req.session.family._id, function(err, members){
-        if(err)
-          console.log (err);
-        else {
-          var membersTable = {}
-          members.forEach(function(value, index, arr){
-            membersTable[value._id] = value;
-          });
-          console.log(membersTable)
-          res.render( 'stream', {
-            title : 'Picture Stream',
-            user: req.session.member,
-            drawings : drawingsFound,
-            requests: requestsFound,
-            membersTable: membersTable
-          });
-        }
+      renderDrawings(req.session.family._id, function(err, drawings){
+        if (err) return console.log(err);
+        var membersTable = {}
+        members.forEach(function(value, index, arr){
+          membersTable[value._id] = value;
+        });
+        res.render( 'stream', {
+          title : 'Picture Stream',
+          user: req.session.member,
+          drawings : drawings,
+          requests: requestsFound,
+          membersTable: membersTable
+        });
+
       });
     });
   });
