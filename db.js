@@ -5,7 +5,8 @@ var familySchema = new Schema({
   name: String,
   pword: String,
   username: String,
-  members: [Schema.Types.ObjectId]
+  members: [Schema.Types.ObjectId],
+  nonsense: String
 });
 mongoose.model("familySchema",familySchema);
 
