@@ -114,7 +114,7 @@ router.post('/sendImage', function(req, res) {
     if (drawing.request) {
       Request.findByIdAndUpdate(
         drawing.request,
-        {$set: {_id: drawing.request}, $pull: {active: req.session.member._id}},
+        {$set: {nonsense: null}, $pull: {active: req.session.member._id}},
         {safe: true, upsert: true},
         function(err, model) {
           if (err) return console.log(err);
