@@ -15,7 +15,8 @@ var requestSchema = new Schema({
   to: [Schema.Types.ObjectId],
   description: String,
   status: Date,
-  active: [Schema.Types.ObjectId]
+  active: [Schema.Types.ObjectId],
+  nonsense: String
 });
 mongoose.model("requestSchema",requestSchema);
 
