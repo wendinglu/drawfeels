@@ -36,7 +36,13 @@ var drawingSchema = new Schema({
   request: Schema.Types.ObjectId
 });
 mongoose.model("drawingSchema",drawingSchema);
-  
+
+var conversationSchema = new Schema({
+  members: Schema.Types.ObjectId,
+  images: [Schema.Types.ObjectId], //changed the to field to array of ids
+});
+mongoose.model("conversationSchema",drawingSchema);
+
 var uristring =
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
