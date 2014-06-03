@@ -46,7 +46,7 @@ block content
                     var currConvo = !{JSON.stringify(convo)}
                     var animator = new ConversationAnimator(convoContainer, currConvo , !{JSON.stringify(membersTable)}, !{JSON.stringify(drawingsTable)});
                     animator.createStack();
-                    document.getElementById('selfFeed').appendChild(convoContainer);
+                    document.getElementById('everyoneFeed').appendChild(convoContainer);
           else 
             h3 No drawings found
 
@@ -62,7 +62,6 @@ block content
                     var convoContainer = document.createElement('div');
                     convoContainer.className = "container drawing-box"
                     var currConvo = !{JSON.stringify(convo)}
-                    //maybe set the class later, yada yada yada
                     var animator = new ConversationAnimator(convoContainer, currConvo , !{JSON.stringify(membersTable)}, !{JSON.stringify(drawingsTable)});
                     animator.createStack();
                     document.getElementById('selfFeed').appendChild(convoContainer);

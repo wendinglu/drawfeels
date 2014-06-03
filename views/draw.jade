@@ -1,9 +1,10 @@
 extends layout
 
 block content
-
+  script(src='/js/jquery.colorPicker.min.js')
   link(rel='stylesheet', href='stylesheets/literally.css')
   script(src='/js/literallycanvas.jquery.js')
+
 
   div(class='container-fluid')
     form#addDrawing(name="sendImage",method="post",action="/draw/sendImage")

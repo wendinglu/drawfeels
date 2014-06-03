@@ -1,7 +1,6 @@
 function ConversationAnimator(container, conversation, membersTable, drawingsTable){
   this.container = container;
   this.membersTable = membersTable;
-  console.log(this.membersTable);
   this.conversation = conversation;
   this.drawingsTable = drawingsTable;
   this.imageIDs = conversation.drawings;
@@ -37,7 +36,8 @@ ConversationAnimator.prototype.initStaticPreview = function() {
       pImg.style.opacity = 1;
       pImg.src = self.membersTable[val].picture;
       fromSpan.appendChild(pImg);
-      self.collabStack.push(pImg);
+
+      self.collabStack.push(function(){ return pImg}());
     });
     fromSpan.className = "col-xs-4";
     descSpan.innerHTML += '<h2 class="inlineText"> together</h2>';
@@ -70,51 +70,50 @@ ConversationAnimator.prototype.initStaticPreview = function() {
 ConversationAnimator.prototype.createStack = function() {
   if (this.imageIDs.length) {
     this.initStaticPreview();    
-    var addSpan = document.createElement('span');
-    addSpan.className = "row";
+    var optionsSpan = document.createElement('span');
+    optionsSpan.className = "row";
 
     var lastDrawing = this.drawingsTable[this.imageIDs[this.imageIDs.length - 1]];
-    console.log("this convo id");
-    console.log(this.conversation._id);
     var addButtonSpan = document.createElement('span');
-    addButtonSpan.className = "col-xs-12";
+    addButtonSpan.className = "col-xs-8";
     addButtonSpan.innerHTML = '<form name="draw" method="post" action="/draw">' +
                   '<input type="hidden" name="img" value="'+ lastDrawing.url +'">' +
                   '<input type="hidden" name="description" value="'+ lastDrawing.description + '"/>'+
                   '<input type="hidden" name="recipient" value="'+ lastDrawing.from +'"/>' + 
                   '<input type="hidden" name="convoID" value="'+ this.conversation._id +'"/>' +
                   '<button type="submit" class="btn btn-lg btn-default"> Add To Drawing </button>';
-    var playButtonSpan = document.createElement('span');
-    var playButton = document.createElement('button');
-    playButtonSpan.appendChild(playButton);
-    playButton.className = "btn btn-lg btn-default";
-    playButton.innerHTML = "See what they added!";
 
-    this.container.appendChild(addButtonSpan);
-    this.container.appendChild(playButtonSpan);
-    var self = this;
+    optionsSpan.appendChild(addButtonSpan);
 
-    playButton.onclick = function startAnimation() {
-      var i = 0;
-      var lastAuthor = self.collabStack[0];
-      self.drawingObj.src="images/icons/blank.png";
-      var animInt = setInterval(function () {
-        var currImg = self.drawingsTable[self.imageIDs[i]];
-        self.drawingObj.src = currImg.url;
-        lastAuthor.style.border = "none";
-        console.log(self.conversation.members.indexOf(currImg.from));
-        lastAuthor = self.collabStack[self.conversation.members.indexOf(currImg.from)];
-        lastAuthor.style.border = "2px solid red";
-        if (i < self.imageIDs.length-1){
-          i++;
-        } else {
-          clearInterval(animInt);
-          lastAuthor.style.border = "none";
-          i = 0;
-          return false;
-        }
-      }, 500);
-    };
+    if (this.imageIDs.length > 1){
+      var playButtonSpan = document.createElement('span');
+      playButtonSpan.className = "col-xs-4";
+      var playButton = document.createElement('button');
+      playButtonSpan.appendChild(playButton);
+      playButton.className = "btn btn-lg btn-default";
+      playButton.innerHTML = "Replay Drawing!";
+      optionsSpan.appendChild(playButtonSpan);
+      var self = this;
+      playButton.onclick = function startAnimation() {
+        var i = 0;
+        self.drawingObj.src="images/icons/blank.png";
+        var animInt = setInterval(function () {
+          var currImg = self.drawingsTable[self.imageIDs[i]];
+          self.drawingObj.src = currImg.url;
+          if (i < self.imageIDs.length-1){
+            i++;
+          } else {
+            clearInterval(animInt);
+            lastAuthor.style.border = "none";
+            i = 0;
+            return false;
+          }
+        }, 500);
+      };
+    }
+
+    this.container.appendChild(optionsSpan);
+    
 
   }
 }

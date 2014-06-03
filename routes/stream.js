@@ -32,7 +32,6 @@ var renderConversations = function(id, callback) {
     if (err)
       callback(err, null)
     else
-      //{$not:{$elemMatch:{$nin:["A","B","C","D","E","F"]}}
       Conversation.where({members: {$not: {$elemMatch: {$nin: family.members}}}}).exec(callback);
   });
 }
@@ -62,6 +61,8 @@ router.get('/', function(req, res) {
             res.send(err, 400);
           } else {
             conversations.sort(function(convoA, convoB) {return convoA.modified < convoB.modified});
+            console.log('conversations');
+            console.log(conversations);
             res.render( 'stream', {
               title : 'Picture Stream',
               user: req.session.member,
