@@ -1,8 +1,3 @@
-// require('./family');
-// require('./member');
-// require('./drawing');
-// require('./requests');
-
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -12,6 +7,7 @@ var bodyParser = require('body-parser');
 var coffeescript = require('coffee-script/register');
 var session = require('express-session');
 var db = require('./db');
+var busboy = require('connect-busboy');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -31,6 +27,7 @@ app.use(logger('dev'));
 app.use(bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+app.use(busboy());
 app.use(cookieParser());
 app.use(session({
   secret: 'asdfasdf',

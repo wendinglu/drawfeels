@@ -2,10 +2,11 @@ express = require 'express'
 router = express.Router()
 accountManager = require './account-manager'
 
-
 mongoose = require('mongoose');
 Family = mongoose.model('familySchema');
 Member = mongoose.model('memberSchema');
+
+fs = require('fs')
 
 #main page links to login or choose family members
 router.get '/', (req, res) ->
@@ -50,15 +51,13 @@ router.post '/addMember', (req, res) ->
   name = req.param 'name'
   picture = req.param 'picture'
   role = req.param 'role'
+  file = req.param 'image'
 
   newMember = new Member(
     name: name
     picture: picture
     role: role
   )
-
-  console.log "Adding member to session:"
-  console.log req.session
 
   newMember.save (err, newObj) ->
     if (err)

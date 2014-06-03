@@ -27,13 +27,15 @@ block content
       div(class='col-sm-6')
         h3 Add a new family member!
         form(method="post" action="addMember" role='form')
-          div(class='form-group')
+          .form-group
             label(for='name') Name
             input(type='text' class='form-control' name='name' placeholder='Name')
-          div(class='form-group')
+          .form-group
             label(for='picture') Picture
             input(type='text' class='form-control' name='picture' placeholder='URL of their picture')
-          div(class='form-group')
+            p -OR-
+            input(type='file' class='form-control' name='image')
+          .form-group
             label(for='role') Description
             input(type='text' class='form-control' name='role' placeholder='e.g. Mom, Dad, Aunt')
 
