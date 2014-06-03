@@ -3,93 +3,108 @@ extends layout
 block content
   div(class='container-fluid')
     .row
-      a(href="/draw" class="btn btn-lg btn-primary") 
-        img(class='med-icon' src='/images/icons/draw.png') 
-        p Draw!
-      a(id="drawReqButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#drawReqModal") 
-        img(class='med-icon' src='/images/icons/request.png')
-        p Request Drawing
-      a(id="drawReqButton" href="#" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#reqResModal") 
-        img(class='med-icon' src='/images/icons/please.png') 
-        p Requests:&nbsp;
-          span#numReqs(style="bold")
-      a(href="#" id="userDrawings" class='btn btn-lg btn-default')
-        img(class='med-icon' src='/images/icons/user.png')
-        p Your Drawings
-      a(href="#" id="familyDrawings" class='btn btn-lg btn-default')
-        img(class='med-icon' src='/images/icons/users.png')
-        p All Drawings
-      a(href="/users/logout" class="btn btn-lg btn-primary") 
-        img(class='med-icon' src='/images/icons/exit.png') 
-        p Log Out
+      .col-xs-12
+        a(href="/draw" class="btn btn-lg btn-primary") 
+          img(class='med-icon' src='/images/icons/draw.png') 
+          p Draw!
+        a(id="drawReqButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#drawReqModal") 
+          img(class='med-icon' src='/images/icons/request.png')
+          p Request Drawing
+        a(id="drawReqButton" href="#" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#reqResModal") 
+          img(class='med-icon' src='/images/icons/please.png') 
+          p Requests:&nbsp;
+            span#numReqs(style="bold")
+        a(href="#" id="userDrawings" class='btn btn-lg btn-default')
+          img(class='med-icon' src='/images/icons/user.png')
+          p Your Drawings
+        a(href="#" id="familyDrawings" class='btn btn-lg btn-default')
+          img(class='med-icon' src='/images/icons/users.png')
+          p All Drawings
+        a(href="/users/logout" class="btn btn-lg btn-primary") 
+          img(class='med-icon' src='/images/icons/exit.png') 
+          p Log Out
 
-      div(id="requests-div")
+    .row
+      .col-xs-12
+        div(id="requests-div")
 
-    div#everyoneFeed(class="streamFeed")
-      if drawings.length
-        each drawing in drawings
-          .row.section
-            .container.drawing-box
-              .row
-                if drawing.from && drawing.to
-                  .col-xs-2
-                    img.circular-small(src='#{membersTable[drawing.from].picture}' style='opacity: 1;')
-                  .col-xs-4
-                    h2.inlineText  drew a 
-                    h2.inlineText.desc=drawing.description
-                    h2.inlineText  for 
-                  .col-xs-6
-                    each rec in drawing.to
-                      img.circular-small(src='#{membersTable[rec].picture}' style="opacity: 1;")
+    .row
+      .col-xs-12
+        div#everyoneFeed(class="streamFeed")
+          .section
+          h1 Everyone's Drawings
+          if drawings.length
+            each drawing in drawings
               .row.section
-                .col-xs-12
-                  img(class='fit-img' src='#{drawing.url}')
-              .row
-                .col-xs-12
-                  .subheading
-                    form(name="draw" method="post" action="/draw")
-                      input(type="hidden" name='img' value='#{drawing.url}')
-                      input(type="hidden" name='description' value='#{drawing.description}')
-                      input(type="hidden" name='recipient' value='#{drawing.from}')
-                      button(type="submit" class='btn btn-lg btn-default') Add To Drawing 
-      else 
-        h3 No drawings found
+                .container.drawing-box
+                  .row
+                    if drawing.from && drawing.to
+                      .col-xs-2
+                        .name-box
+                          img.circular-small(src='#{membersTable[drawing.from].picture}' style='opacity: 1;')
+                          h4
+                            =membersTable[drawing.from].name
+                      .col-xs-4
+                        h2.inlineText  drew a 
+                        h2.inlineText.desc=drawing.description
+                        h2.inlineText  for 
+                      .col-xs-6
+                        each rec in drawing.to
+                          .name-box
+                            img.circular-small(src='#{membersTable[rec].picture}' style="opacity: 1;")
+                            h4
+                              =membersTable[rec].name
+                  .row.section
+                    .col-xs-12
+                      img(class='fit-img' src='#{drawing.url}')
+                  .row
+                    .col-xs-12
+                      .subheading
+                        form(name="draw" method="post" action="/draw")
+                          input(type="hidden" name='img' value='#{drawing.url}')
+                          input(type="hidden" name='description' value='#{drawing.description}')
+                          input(type="hidden" name='recipient' value='#{drawing.from}')
+                          button(type="submit" class='btn btn-lg btn-default') Add To Drawing 
+          else 
+            h3 No drawings found
 
-    div#selfFeed(class="streamFeed")
-      if drawings.length
-        each drawing in drawings
-          if drawing.from == user._id || drawing.to.indexOf(user._id) >= 0
-           .row.section
-              .container.drawing-box
-                .row
-                  .col-xs-2
-                    .name-box
-                      img.circular-small(src='#{membersTable[drawing.from].picture}' style='opacity: 1;')
-                      h4
-                        =membersTable[drawing.from].name
-                  .col-xs-4
-                    h2.inlineText  drew a 
-                    h2.inlineText.desc=drawing.description
-                    h2.inlineText  for 
-                  .col-xs-6
-                    each rec in drawing.to
-                      .name-box
-                        img.circular-small(src='#{membersTable[rec].picture}' style="opacity: 1;")
-                        h4
-                          =membersTable[rec].name
-                .row.section
-                  .col-xs-12
-                    img(class='fit-img' src='#{drawing.url}')
-                .row
-                  .col-xs-12
-                    .subheading
-                      form(name="draw" method="post" action="/draw")
-                        input(type="hidden" name='img' value='#{drawing.url}')
-                        input(type="hidden" name='description' value='#{drawing.description}')
-                        input(type="hidden" name='recipient' value='#{drawing.from}')
-                        button(type="submit" class='btn btn-lg btn-default') Add To Drawing 
-      else 
-        h3 No drawings found
+        div#selfFeed(class="streamFeed")
+          .section
+          h1 Drawings To/From You
+          if drawings.length
+            each drawing in drawings
+              if drawing.from == user._id || drawing.to.indexOf(user._id) >= 0
+               .row.section
+                  .container.drawing-box
+                    .row
+                      .col-xs-2
+                        .name-box
+                          img.circular-small(src='#{membersTable[drawing.from].picture}' style='opacity: 1;')
+                          h4
+                            =membersTable[drawing.from].name
+                      .col-xs-4
+                        h2.inlineText  drew a 
+                        h2.inlineText.desc=drawing.description
+                        h2.inlineText  for 
+                      .col-xs-6
+                        each rec in drawing.to
+                          .name-box
+                            img.circular-small(src='#{membersTable[rec].picture}' style="opacity: 1;")
+                            h4
+                              =membersTable[rec].name
+                    .row.section
+                      .col-xs-12
+                        img(class='fit-img' src='#{drawing.url}')
+                    .row
+                      .col-xs-12
+                        .subheading
+                          form(name="draw" method="post" action="/draw")
+                            input(type="hidden" name='img' value='#{drawing.url}')
+                            input(type="hidden" name='description' value='#{drawing.description}')
+                            input(type="hidden" name='recipient' value='#{drawing.from}')
+                            button(type="submit" class='btn btn-lg btn-default') Add To Drawing 
+          else 
+            h3 No drawings found
 
   div(class="modal fade" id="drawReqModal" tabindex="-1" role="dialog" aria-labelledby="drawReqModal" aria-hidden="true")
     div(class="modal-dialog modal-lg")
