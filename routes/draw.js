@@ -7,6 +7,8 @@ var Family = mongoose.model('familySchema');
 var Drawing = mongoose.model('drawingSchema');
 var Member = mongoose.model('memberSchema');
 var Request = mongoose.model('requestSchema');
+var Conversation = mongoose.model('conversationSchema');
+
 
 var renderMembers = function(id, callback) {
   console.log("finding #{id}");
@@ -48,9 +50,13 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
   var current_user = req.session.member;
-
+  var convoID = req.body.convoID;
   var background = req.body.img; 
+  console.log('background img');
+  console.log(background);
   var rcpnt = req.body.recipient;
+  console.log('rcpnt');
+  console.log(rcpnt);
   var description = req.body.description;
   var request = req.body.request;
 
@@ -68,7 +74,8 @@ router.post('/', function(req, res) {
         'background': background,
         'rcpnt': rcpnt,
         'description': description,
-        'request': request
+        'request': request,
+        'convoID' : convoID
       });
     }
   });
@@ -85,11 +92,13 @@ var token = function() {
 
 router.post('/sendImage', function(req, res) {
   //converting the canvas image into a png and saving it on the server
+  //if there is a collaboration id, find that collaboration and update
   var img = req.body.image;
   var imgData = img.replace(/^data:image\/\w+;base64,/, "");
   var buf = new Buffer(imgData, 'base64');
   var imgName = token();
-  
+  var convoID = req.body.convoID;
+
   fs.writeFile('./public/images/drawings/' + imgName + '.png', buf);
   // created at Date
   var date = new Date().getTime();
@@ -109,23 +118,61 @@ router.post('/sendImage', function(req, res) {
   var newDrawing = new Drawing(properties);
 
   newDrawing.save( function( err, drawing){
-    if (err) return console.error(err);
-    console.log(newDrawing);
-    if (drawing.request) {
-      Request.findByIdAndUpdate(
-        drawing.request,
-        {$set: {nonsense: null}, $pull: {active: req.session.member._id}},
-        {safe: true, upsert: true},
-        function(err, model) {
-          if (err) return console.log(err);
-          else res.redirect('/stream')
-        }
-      );
-    } 
-    else res.redirect('/stream');
-  });
-
-  
+    if (err) res.send(err,400);
+    else {
+      console.log(newDrawing);
+      if (convoID) { //is collaboration
+        var participants = drawing.to.slice(0, drawing.to.length);
+        participants.push(drawing.from);
+        Conversation.findByIdAndUpdate(
+          convoID, 
+          {$set: {modified: date}, $push: {drawings: drawing._id}, $addToSet: {members: {$each: participants}}},
+          {safe: true, upsert: true},
+          function(err, conversation) {
+            if (err) {
+              console.log("Could not update conversation")
+              res.send(err, 400)
+            } else {
+              console.log(conversation);
+              res.redirect('/stream');
+            }
+          }
+        );
+      } else {
+        var participants = drawing.to.slice(0, drawing.to.length);
+        participants.push(drawing.from);
+        var newConvo = new Conversation({
+          members: participants,
+          drawings: [drawing._id],
+          modified: date
+        });
+        newConvo.save( function(err, conversation){
+          if (err) {
+            console.log("Could not save conversation")
+            res.send(err, 400)
+          } else {
+            console.log("conversation created");
+            console.log(conversation);
+            if (drawing.request) {
+              Request.findByIdAndUpdate(
+                drawing.request,
+                {$set: {nonsense: null}, $pull: {active: req.session.member._id}},
+                {safe: true, upsert: true},
+                function(err, model) {
+                  if (err) {
+                    console.log("Could not update request")
+                    res.send(err, 400)
+                  }
+                  else res.redirect('/stream');
+                }
+              );
+            }
+            else res.redirect('/stream');
+          } 
+        });
+      }
+    }
+  });  
 });
 
 

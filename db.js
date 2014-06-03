@@ -37,7 +37,14 @@ var drawingSchema = new Schema({
   request: Schema.Types.ObjectId
 });
 mongoose.model("drawingSchema",drawingSchema);
-  
+
+var conversationSchema = new Schema({
+  members: [Schema.Types.ObjectId],
+  drawings: [Schema.Types.ObjectId],
+  modified: Date
+});
+mongoose.model("conversationSchema",conversationSchema);
+
 var uristring =
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||

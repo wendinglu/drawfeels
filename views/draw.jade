@@ -1,12 +1,10 @@
 extends layout
 
 block content
-
+  script(src='/js/jquery.colorPicker.min.js')
   link(rel='stylesheet', href='stylesheets/literally.css')
-  //- script(src='/js/jquery-1.11.1.min.js')
   script(src='/js/literallycanvas.jquery.js')
 
-  //should take in whether or not there is a preset recipient or title (for cases where requests are made)
 
   div(class='container-fluid')
     form#addDrawing(name="sendImage",method="post",action="/draw/sendImage")
@@ -27,6 +25,7 @@ block content
       div(class='row section')
         input(type='hidden' name='image')
       input(type='hidden' name='request' value=request)
+      input(type='hidden' name='convoID' value=convoID)
       div(class='row section')
         p#noRecErr(style="visibility: hidden; color: red;") Please choose at least 1 recipient!
         div(id="send-to")
@@ -62,9 +61,9 @@ block content
 
   script(type='text/javascript').
     var preloadedImg = new Image()
-    preloadedImg.src = '#{img}'
+    preloadedImg.src = '#{background}'
 
-    $('.literally').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
+    $('.row.literally,section').literallycanvas({imageURLPrefix: 'images/icons', watermarkImage: preloadedImg,
     onInit: function(lc) { 
       $('[data-action=publish]').click(function(e) {
         if (rcpnts.length){

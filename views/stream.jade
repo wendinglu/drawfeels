@@ -1,6 +1,7 @@
 extends layout
 
 block content
+
   div(class='container-fluid')
     .row
       .col-xs-12
@@ -28,81 +29,42 @@ block content
       .col-xs-12
         div(id="requests-div")
 
+
     .row
       .col-xs-12
         div#everyoneFeed(class="streamFeed")
           .section
           h1 Everyone's Drawings
-          if drawings.length
-            each drawing in drawings
-              .row.section
-                .container.drawing-box
-                  .row
-                    if drawing.from && drawing.to
-                      .col-xs-2
-                        .name-box
-                          img.circular-small(src='#{membersTable[drawing.from].picture}' style='opacity: 1;')
-                          h4
-                            =membersTable[drawing.from].name
-                      .col-xs-4
-                        h2.inlineText  drew a 
-                        h2.inlineText.desc=drawing.description
-                        h2.inlineText  for 
-                      .col-xs-6
-                        each rec in drawing.to
-                          .name-box
-                            img.circular-small(src='#{membersTable[rec].picture}' style="opacity: 1;")
-                            h4
-                              =membersTable[rec].name
-                  .row.section
-                    .col-xs-12
-                      img(class='fit-img' src='#{drawing.url}')
-                  .row
-                    .col-xs-12
-                      .subheading
-                        form(name="draw" method="post" action="/draw")
-                          input(type="hidden" name='img' value='#{drawing.url}')
-                          input(type="hidden" name='description' value='#{drawing.description}')
-                          input(type="hidden" name='recipient' value='#{drawing.from}')
-                          button(type="submit" class='btn btn-lg btn-default') Add To Drawing 
+          if conversations.length
+            each convo in conversations
+              if convo.drawings.length
+                .row.section
+                  script.
+                    console.log(!{JSON.stringify(convo)});
+                    var convoContainer = document.createElement('div');
+                    convoContainer.className = "container drawing-box"
+                    var currConvo = !{JSON.stringify(convo)}
+                    var animator = new ConversationAnimator(convoContainer, currConvo , !{JSON.stringify(membersTable)}, !{JSON.stringify(drawingsTable)});
+                    animator.createStack();
+                    document.getElementById('everyoneFeed').appendChild(convoContainer);
           else 
             h3 No drawings found
 
         div#selfFeed(class="streamFeed")
           .section
           h1 Drawings To/From You
-          if drawings.length
-            each drawing in drawings
-              if drawing.from == user._id || drawing.to.indexOf(user._id) >= 0
-               .row.section
-                  .container.drawing-box
-                    .row
-                      .col-xs-2
-                        .name-box
-                          img.circular-small(src='#{membersTable[drawing.from].picture}' style='opacity: 1;')
-                          h4
-                            =membersTable[drawing.from].name
-                      .col-xs-4
-                        h2.inlineText  drew a 
-                        h2.inlineText.desc=drawing.description
-                        h2.inlineText  for 
-                      .col-xs-6
-                        each rec in drawing.to
-                          .name-box
-                            img.circular-small(src='#{membersTable[rec].picture}' style="opacity: 1;")
-                            h4
-                              =membersTable[rec].name
-                    .row.section
-                      .col-xs-12
-                        img(class='fit-img' src='#{drawing.url}')
-                    .row
-                      .col-xs-12
-                        .subheading
-                          form(name="draw" method="post" action="/draw")
-                            input(type="hidden" name='img' value='#{drawing.url}')
-                            input(type="hidden" name='description' value='#{drawing.description}')
-                            input(type="hidden" name='recipient' value='#{drawing.from}')
-                            button(type="submit" class='btn btn-lg btn-default') Add To Drawing 
+          if conversations.length
+            each convo in conversations
+              if convo.members && convo.members.indexOf(user._id) >= 0
+                .row.section
+                  script.
+                    console.log(!{JSON.stringify(convo)});
+                    var convoContainer = document.createElement('div');
+                    convoContainer.className = "container drawing-box"
+                    var currConvo = !{JSON.stringify(convo)}
+                    var animator = new ConversationAnimator(convoContainer, currConvo , !{JSON.stringify(membersTable)}, !{JSON.stringify(drawingsTable)});
+                    animator.createStack();
+                    document.getElementById('selfFeed').appendChild(convoContainer);
           else 
             h3 No drawings found
 
