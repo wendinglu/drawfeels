@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
     res.redirect('/stream');
   }
   else {
-    res.render('index', { title: 'Express', family: req.session.family, member: req.session.member });  
+    res.redirect('/users/login');
   }
 });
 
