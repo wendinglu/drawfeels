@@ -126,7 +126,7 @@ router.post('/sendImage', function(req, res) {
         participants.push(drawing.from);
         Conversation.findByIdAndUpdate(
           convoID, 
-          {$set: {nonsense: null}, $push: {drawings: drawing._id}, $addToSet: {members: {$each: participants}}},
+          {$set: {modified: date}, $push: {drawings: drawing._id}, $addToSet: {members: {$each: participants}}},
           {safe: true, upsert: true},
           function(err, conversation) {
             if (err) {
@@ -143,7 +143,8 @@ router.post('/sendImage', function(req, res) {
         participants.push(drawing.from);
         var newConvo = new Conversation({
           members: participants,
-          drawings: [drawing._id]
+          drawings: [drawing._id],
+          modified: date
         });
         newConvo.save( function(err, conversation){
           if (err) {

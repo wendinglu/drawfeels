@@ -61,6 +61,7 @@ router.get('/', function(req, res) {
             console.log(err);
             res.send(err, 400);
           } else {
+            conversations.sort(function(convoA, convoB) {return convoA.modified < convoB.modified});
             res.render( 'stream', {
               title : 'Picture Stream',
               user: req.session.member,

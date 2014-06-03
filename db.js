@@ -41,7 +41,7 @@ mongoose.model("drawingSchema",drawingSchema);
 var conversationSchema = new Schema({
   members: [Schema.Types.ObjectId],
   drawings: [Schema.Types.ObjectId],
-  nonsense: String
+  modified: Date
 });
 mongoose.model("conversationSchema",conversationSchema);
 
