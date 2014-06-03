@@ -39,10 +39,10 @@ var drawingSchema = new Schema({
 mongoose.model("drawingSchema",drawingSchema);
 
 var conversationSchema = new Schema({
-  members: Schema.Types.ObjectId,
-  images: [Schema.Types.ObjectId], //changed the to field to array of ids
+  members: [Schema.Types.ObjectId],
+  images: [Schema.Types.ObjectId]
 });
-mongoose.model("conversationSchema",drawingSchema);
+mongoose.model("conversationSchema",conversationSchema);
 
 var uristring =
 process.env.MONGOLAB_URI ||

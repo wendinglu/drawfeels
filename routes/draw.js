@@ -146,6 +146,8 @@ router.post('/sendImage', function(req, res) {
             console.log("Could not save new conversation")
             res.send(err, 400)
           } else {
+            console.log("conversation created");
+            console.log(conversation);
             if (drawing.request) {
               Request.findByIdAndUpdate(
                 drawing.request,
