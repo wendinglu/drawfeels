@@ -86,15 +86,25 @@ router.post '/addMember', (req, res) ->
 
 #Login as family member
 router.get '/chooseMember', (req, res) ->
-  if req.session.family && req.session.family.members.indexOf(req.query.id) > -1
-    Member.findOne({_id: req.query.id}, (error, obj) ->
-      if !obj
-        console.log("Member not found")
+  console.log(req.session.family.members)
+  console.log(req.query.id)
+  if req.session.family
+    Family.findOne({_id: req.session.family._id}, (error, fam) ->
+      if !fam
+        console.log("Family not found")
         res.send(error, 400)
+      else if fam.members.indexOf(req.query.id) > -1
+        Member.findOne({_id: req.query.id}, (error, obj) ->
+          if !obj
+            console.log("Member not found")
+            res.send(error, 400)
+          else
+            console.log("Logging in as " + obj.name)
+            req.session.member = obj
+            res.redirect('/stream')
+        )
       else
-        console.log("Logging in as " + obj.name)
-        req.session.member = obj
-        res.redirect('/stream')
+        res.redirect('login')
     )
   else
     res.redirect('login')
