@@ -5,69 +5,117 @@ function ConversationAnimator(container, conversation, membersTable, drawingsTab
   this.conversation = conversation;
   this.drawingsTable = drawingsTable;
   this.imageIDs = conversation.drawings;
-  this.stack = [];
+  this.drawingObj = null;
+  this.collabStack = [];
 }
 
-//things I have to do: render the UI; create the visual for just one element, each subsequent element has a greater z index
-//create one UI thing per element in the array of members
-
-ConversationAnimator.prototype.createDrawingDiv = function(drawingID) {
+ConversationAnimator.prototype.initStaticPreview = function() {
+  var drawingID = this.imageIDs[this.imageIDs.length - 1];
   var drawing = this.drawingsTable[drawingID];
+  var drawingContainer = document.createElement('div');
   var detailSpan = document.createElement('span');
   detailSpan.className = "row";
 
-  //var detailSpan = document.createElement('span'); add the grid columns
   var fromSpan = document.createElement('span');
   fromSpan.className = "col-xs-2";
-  fromSpan.innerHTML = '<img class="circular-small" style="opacity: 1;" src="' + this.membersTable[drawing.from].picture + '"/>';
-  
-  var desciptorSpan = document.createElement('span');
-  desciptorSpan.className = "col-xs-4";
-  desciptorSpan.innerHTML ='<h2 class="inlineText"> drew </h2><h2 class="inlineText desc">' + drawing.description + '</h2><h2 class="inlineText"> for </h2>';
+
+  var descSpan = document.createElement('span');
+  descSpan.className = "col-xs-4";
+  descSpan.innerHTML ='<h2 class="inlineText"> drew a </h2><h2 class="inlineText desc">' + drawing.description + '</h2>';
 
   var toSpan = document.createElement('span');
-  toSpan.className = "col-xs-4";
-  var self = this;
-  drawing.to.forEach(function(val, idx, arr){
-    toSpan.innerHTML += '<img class="circular-small" style="opacity: 1;" src="' + self.membersTable[val].picture + '"/>';
-  });
+  toSpan.className = "col-xs-6";
 
+  var self = this;
+  if (this.imageIDs.length > 1) {
+    var participants = this.conversation.members;
+    participants.forEach(function(val, ind, arr) {
+      if (ind == arr.length - 1)
+        fromSpan.innerHTML += ('<h2 class="inlineText"> and </h2>');
+      var pImg = new Image();
+      pImg.className = "circular-med";
+      pImg.style.opacity = 1;
+      pImg.src = self.membersTable[val].picture;
+      fromSpan.appendChild(pImg);
+      self.collabStack.push(pImg);
+    });
+    fromSpan.className = "col-xs-4";
+    descSpan.innerHTML += '<h2 class="inlineText"> together</h2>';
+    descSpan.className = "col-xs-8";
+  } else {
+    fromSpan.innerHTML = '<img class="circular-med" style="opacity: 1;" src="' + this.membersTable[drawing.from].picture + '"/>';
+    descSpan.innerHTML += '<h2 class="inlineText"> for </h2>';
+    drawing.to.forEach(function(val, idx, arr){
+      toSpan.innerHTML += '<img class="circular-med" style="opacity: 1;" src="' + self.membersTable[val].picture + '"/>';
+    });
+  }
+  
   detailSpan.appendChild(fromSpan);
-  detailSpan.appendChild(desciptorSpan);
+  detailSpan.appendChild(descSpan);
   detailSpan.appendChild(toSpan);
 
 
-  //APPEND FROMSPAN, DESCSPAN and TOSPAN TO DETAIL SPAN
   var imgSpan = document.createElement('span');
   imgSpan.class="row section"
-  imgSpan.innerHTML = '<span class="col-xs-12"><img class="fit-img" src="'+ drawing.url +'"/>';
-  //drawingDiv.appendChild(detailSpan);
-  //drawingDiv.appendChild(imgSpan);
-  this.container.appendChild(detailSpan);
-  this.container.appendChild(imgSpan);
+  var drawingObj = new Image();
+  drawingObj.className = "fit-img";
+  drawingObj.src = drawing.url;
+  this.drawingObj = drawingObj;
+  imgSpan.appendChild(this.drawingObj)
+  drawingContainer.appendChild(detailSpan);
+  drawingContainer.appendChild(imgSpan);
+  this.container.appendChild(drawingContainer);
 }
 
 ConversationAnimator.prototype.createStack = function() {
   if (this.imageIDs.length) {
-    var self = this;
-    this.imageIDs.forEach(function(val, ind, arr){
-      self.createDrawingDiv(val, ind);
-    });
+    this.initStaticPreview();    
     var addSpan = document.createElement('span');
     addSpan.className = "row";
 
     var lastDrawing = this.drawingsTable[this.imageIDs[this.imageIDs.length - 1]];
     console.log("this convo id");
     console.log(this.conversation._id);
-    var buttonSpan = document.createElement('span');
-    buttonSpan.className = "col-xs-12";
-    buttonSpan.innerHTML = '<form name="draw" method="post" action="/draw">' +
+    var addButtonSpan = document.createElement('span');
+    addButtonSpan.className = "col-xs-12";
+    addButtonSpan.innerHTML = '<form name="draw" method="post" action="/draw">' +
                   '<input type="hidden" name="img" value="'+ lastDrawing.url +'">' +
                   '<input type="hidden" name="description" value="'+ lastDrawing.description + '"/>'+
                   '<input type="hidden" name="recipient" value="'+ lastDrawing.from +'"/>' + 
                   '<input type="hidden" name="convoID" value="'+ this.conversation._id +'"/>' +
                   '<button type="submit" class="btn btn-lg btn-default"> Add To Drawing </button>';
-    this.container.appendChild(buttonSpan);
+    var playButtonSpan = document.createElement('span');
+    var playButton = document.createElement('button');
+    playButtonSpan.appendChild(playButton);
+    playButton.className = "btn btn-lg btn-default";
+    playButton.innerHTML = "See what they added!";
+
+    this.container.appendChild(addButtonSpan);
+    this.container.appendChild(playButtonSpan);
+    var self = this;
+
+    playButton.onclick = function startAnimation() {
+      var i = 0;
+      var lastAuthor = self.collabStack[0];
+      self.drawingObj.src="images/icons/blank.png";
+      var animInt = setInterval(function () {
+        var currImg = self.drawingsTable[self.imageIDs[i]];
+        self.drawingObj.src = currImg.url;
+        lastAuthor.style.border = "none";
+        console.log(self.conversation.members.indexOf(currImg.from));
+        lastAuthor = self.collabStack[self.conversation.members.indexOf(currImg.from)];
+        lastAuthor.style.border = "2px solid red";
+        if (i < self.imageIDs.length-1){
+          i++;
+        } else {
+          clearInterval(animInt);
+          lastAuthor.style.border = "none";
+          i = 0;
+          return false;
+        }
+      }, 500);
+    };
+
   }
 }
-                
+

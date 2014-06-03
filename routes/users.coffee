@@ -145,4 +145,8 @@ router.post '/create', (req, res) ->
       console.log "saved"
       res.send(newUser, 200)
 
+router.get '/logout', (req, res) ->
+  req.session.destroy()
+  res.redirect('login')
+
 module.exports = router

@@ -2,20 +2,34 @@ extends ../layout
 
 block content
   div(class='container')
+    .row
+      .col-sm-6
+        h1 
+          span.glyphicon.glyphicon-pencil 
+          =" DrawingBoard"
+    .row
+      .col-sm-12
+        h4 Send and receive drawings from people in your family!
+
     if error
-      h2(class='error') error
+      .row
+        h2(class='error')
+          =error
+
+        a(href='/' class='btn btn-default btn-block') Back to the DrawingBoard!
     else
-      div(class='col-sm-6')
-        form#loginForm(role='form')
-          div(class='form-group')
-            label(for='username') Username
-            input(type='text', name='username', class='form-control')
-          div(class='form-group')
-            label(for='password') Password
-            input(type='password', name='password', class='form-control')
-          div(class='form-group')
-            button(type='submit', class='btn btn-primary btn-block') Log In
-          div(class='form-group')
-            a(href='/users/new' class='btn btn-default btn-block') Sign Up
+      .row.section
+        div(class='col-sm-6')
+          form#loginForm(role='form')
+            div(class='form-group')
+              label(for='username') Username
+              input(type='text', name='username', class='form-control')
+            div(class='form-group')
+              label(for='password') Password
+              input(type='password', name='password', class='form-control')
+            div(class='form-group')
+              button(type='submit', class='btn btn-primary btn-block') Log In
+            div(class='form-group')
+              a(href='/users/new' class='btn btn-default btn-block') Sign Up
 
   script(src="/js/login.js")

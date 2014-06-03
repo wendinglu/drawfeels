@@ -1,10 +1,19 @@
 extends ../layout
 
 block content
-  form#newUserForm(action='create', method='post')
-    input(type='text', name='username', placeholder='user name')
-    input(type='text', name='name', placeholder='family name')
-    input(type='password', name='password', placeholder='password')
-    input(type='submit', name='create user')
+  .container
+      form#newUserForm(action='create', method='post')
+        .row
+          .form-group
+            label(for='username') Username
+            input.form-control(type='text', name='username', placeholder='e.g. coolfam123')
+          .form-group
+            label(for='name') Family Name
+            input.form-control(type='text', name='name', placeholder='e.g. The Smiths')
+          .form-group
+            label(for='password') Password
+            input.form-control(type='password', name='password', placeholder='not a secure site, use a dummy pw')
+          .form-group
+            button(type='submit', class='btn btn-primary') Create
 
   script(src="/js/login.js")
