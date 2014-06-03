@@ -100,7 +100,6 @@ a {
 
 #everyoneFeed{
   z-index: 1;
-  visibility: hidden;
 }
 
 .desc {
@@ -121,4 +120,9 @@ a {
 
 .fit-img {
   max-width: 100%;
+}
+
+.name-box {
+  display: inline-block;
+  margin-left: 10px;
 }
