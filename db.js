@@ -40,7 +40,8 @@ mongoose.model("drawingSchema",drawingSchema);
 
 var conversationSchema = new Schema({
   members: [Schema.Types.ObjectId],
-  images: [Schema.Types.ObjectId]
+  drawings: [Schema.Types.ObjectId],
+  nonsense: String
 });
 mongoose.model("conversationSchema",conversationSchema);
 

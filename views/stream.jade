@@ -1,6 +1,22 @@
 extends layout
 
 block content
+  script()
+  div#selfFeed(class="streamFeed")
+      if conversations.length
+        each convo in conversations
+         .row.section
+            script.
+              console.log(!{JSON.stringify(convo)});
+              var convoContainer = document.createElement('div');
+              convoContainer.className = "container drawing-box"
+              var currConvo = !{JSON.stringify(convo)}
+              //maybe set the class later, yada yada yada
+              var animator = new ConversationAnimator(convoContainer, currConvo , !{JSON.stringify(membersTable)}, !{JSON.stringify(drawingsTable)});
+              animator.createStack();
+              document.getElementById('selfFeed').appendChild(convoContainer);
+          
+//
   div(class='container-fluid')
     div(class='row')
       a(href="/draw" class="btn btn-lg btn-primary") 
@@ -24,7 +40,7 @@ block content
 
     div#everyoneFeed(class="streamFeed")
       if drawings.length
-        each drawing in drawings
+        each convo in conversations
           .row.section
             .container.drawing-box
               .row

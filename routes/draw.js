@@ -50,9 +50,13 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
   var current_user = req.session.member;
-  var convoID = req.session.convoID;
+  var convoID = req.body.convoID;
   var background = req.body.img; 
+  console.log('background img');
+  console.log(background);
   var rcpnt = req.body.recipient;
+  console.log('rcpnt');
+  console.log(rcpnt);
   var description = req.body.description;
   var request = req.body.request;
 
@@ -122,11 +126,11 @@ router.post('/sendImage', function(req, res) {
         participants.push(drawing.from);
         Conversation.findByIdAndUpdate(
           convoID, 
-          {$set: {dummy: null}, $push: {images: drawing._id}, $addToSet: {members: {$each: participants}}},
+          {$set: {nonsense: null}, $push: {drawings: drawing._id}, $addToSet: {members: {$each: participants}}},
           {safe: true, upsert: true},
           function(err, conversation) {
             if (err) {
-              console.log("Could not update new conversation")
+              console.log("Could not update conversation")
               res.send(err, 400)
             } else {
               console.log(conversation);
@@ -139,11 +143,11 @@ router.post('/sendImage', function(req, res) {
         participants.push(drawing.from);
         var newConvo = new Conversation({
           members: participants,
-          images: [drawing._id]
+          drawings: [drawing._id]
         });
         newConvo.save( function(err, conversation){
           if (err) {
-            console.log("Could not save new conversation")
+            console.log("Could not save conversation")
             res.send(err, 400)
           } else {
             console.log("conversation created");

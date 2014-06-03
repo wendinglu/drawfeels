@@ -5,6 +5,8 @@ var Family = mongoose.model('familySchema');
 var Drawing = mongoose.model('drawingSchema');
 var Request = mongoose.model('requestSchema');
 var Member = mongoose.model('memberSchema');
+var Conversation = mongoose.model('conversationSchema');
+
 
 var renderMembers = function(id, callback) {
   console.log("finding #{id}");
@@ -25,6 +27,16 @@ var renderDrawings = function(id, callback) {
   });
 }
 
+var renderConversations = function(id, callback) {
+  Family.findOne({_id: id}, function(err, family){
+    if (err)
+      callback(err, null)
+    else
+      //{$not:{$elemMatch:{$nin:["A","B","C","D","E","F"]}}
+      Conversation.where({members: {$not: {$elemMatch: {$nin: family.members}}}}).exec(callback);
+  });
+}
+
 /* GET home page. */
 router.get('/', function(req, res) {
 
@@ -36,18 +48,29 @@ router.get('/', function(req, res) {
       if (err) return console.log(err);
       renderDrawings(req.session.family._id, function(err, drawings){
         if (err) return console.log(err);
-        var membersTable = {}
+        var membersTable = {};
         members.forEach(function(value, index, arr){
           membersTable[value._id] = value;
         });
-        res.render( 'stream', {
-          title : 'Picture Stream',
-          user: req.session.member,
-          drawings : drawings,
-          requests: requestsFound,
-          membersTable: membersTable
+        var drawingsTable = {};
+        drawings.forEach(function(value, index, arr){
+          drawingsTable[value._id] = value;
         });
-
+        renderConversations(req.session.family._id, function(err, conversations){
+          if (err) {
+            console.log(err);
+            res.send(err, 400);
+          } else {
+            res.render( 'stream', {
+              title : 'Picture Stream',
+              user: req.session.member,
+              drawingsTable : drawingsTable,
+              conversations : conversations,
+              requests: requestsFound,
+              membersTable: membersTable
+            });
+          }
+        });
       });
     });
   });
