@@ -460,7 +460,7 @@
             LC.bindEvents(this, this.canvas, this.opts.keyboardShortcuts);
             this.colors = {
                 primary: this.opts.primaryColor || "#000",
-                secondary: this.opts.secondaryColor || "#fff",
+                secondary: this.opts.secondaryColor || "#transparent",
                 background: this.opts.backgroundColor || "transparent"
             };
             this.canvas.style.backgroundColor = this.colors.background;
@@ -1354,7 +1354,7 @@
 (function() {
     var _ref;
     window.LC = (_ref = window.LC) != null ? _ref : {};
-    LC.toolbarHTML = '  <div class="toolbar-row">    <div class="toolbar-row-left">      <div class="tools button-group"></div>      &nbsp;&nbsp;&nbsp;&nbsp;Background:      <div class="color-square background-picker">&nbsp;</div>    </div>    <div class="toolbar-row-right">      <div class="action-buttons">        <div class="button clear-button danger">Clear</div>        <div class="button-group">          <div class="button btn-warning undo-button">&larr;</div><div class="button btn-warning redo-button">&rarr;</div>        </div>        <div class="button-group">          <div class="button btn-inverse zoom-out-button">&ndash;</div><div class="button btn-inverse zoom-in-button">+</div>        </div>        <div class="zoom-display">1</div>      </div>    </div>    <div class="clearfix"></div>  </div>  <div class="toolbar-row">    <div class="toolbar-row-left">      <div class="color-square primary-picker"></div>      <div class="color-square secondary-picker"></div>      <div class="tool-options-container"></div>    </div>    <div class="clearfix"></div>  </div>';
+    LC.toolbarHTML = '  <div class="toolbar-row">    <div class="toolbar-row-left">     <div class="color-square primary-picker"></div>  &nbsp;&nbsp;&nbsp;&nbsp; <div class="tools button-group"></div>    </div>    <div class="toolbar-row-right">      <div class="action-buttons">        <div class="button clear-button danger">Clear</div>        <div class="button-group">          <div class="button btn-warning undo-button">&larr;</div><div class="button btn-warning redo-button">&rarr;</div>        </div>        <div class="button-group">          <div class="button btn-inverse zoom-out-button">&ndash;</div><div class="button btn-inverse zoom-in-button">+</div>        </div>        <div class="zoom-display">1</div>      </div>    </div>    <div class="clearfix"></div>  </div>  <div class="toolbar-row">    <div class="toolbar-row-left">      <div class="tool-options-container"></div>    </div>    <div class="clearfix"></div>  </div>';
     LC.makeColorPicker = function($el, title, callback) {
         var cp;
         $el.data("color", "rgb(0, 0, 0)");
@@ -1409,9 +1409,8 @@
         };
         Toolbar.prototype.initColors = function() {
             var pickers;
-            this.$el.find(".primary-picker, .secondary-picker, .background-picker").css("background-image", "url(" + this.opts.imageURLPrefix + "/alpha.png)");
-            this.$el.find(".secondary-picker").css("background-position", "0% 100%");
-            pickers = [ this._bindColorPicker("primary", "Primary (stroke)"), this._bindColorPicker("secondary", "Secondary (fill)"), this._bindColorPicker("background", "Background") ];
+            this.$el.find(".primary-picker").css("background-image", "url(" + this.opts.imageURLPrefix + "/alpha.png)");
+            pickers = [ this._bindColorPicker("primary", "Primary (stroke)")];
             return this.lc.on("drawStart", function() {
                 var picker, _i, _len, _results;
                 _results = [];
@@ -1750,7 +1749,7 @@
         }
         StrokeWidget.prototype.options = function() {
             var $brushWidthVal, $el, $input, _this = this;
-            $el = $("<span class='brush-width-min'>1 px</span><input type='range' min='1' max='50' step='1' value='" + this.tool.strokeWidth + "'><span class='brush-width-max'>50 px</span><span class='brush-width-val'>(5 px)</span>");
+            $el = $("<span style='display: float: left;' class='position: relative; brush-width-min'>1 px</span><span style='display:inline-block;'><input style='width:250px' type='range' min='1' max='50' step='1' value='" + this.tool.strokeWidth + "'></span><span style='display: inline-block;' class='brush-width-max'>50 px</span><span class='brush-width-val'>(5 px)</span>");
             $input = $el.filter("input");
             if ($input.size() === 0) {
                 $input = $el.find("input");
@@ -1963,7 +1962,7 @@
             opts.primaryColor = "#000";
         }
         if (opts.secondaryColor == null) {
-            opts.secondaryColor = "#fff";
+            opts.secondaryColor = "transparent";
         }
         if (opts.backgroundColor == null) {
             opts.backgroundColor = "transparent";

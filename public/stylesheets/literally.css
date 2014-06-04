@@ -138,23 +138,23 @@
     border-top: 1px solid #c8c8c8; }
     .literally .toolbar-row:first-child {
       width: 100%;
-      height: 30px; }
+      height: 50px; }
     .literally .toolbar-row .toolbar-row-left, .literally .toolbar-row .toolbar-row-right {
       margin-top: 3px;
       margin-bottom: 3px;
-      height: 24px;
-      line-height: 24px; }
+      height: 30px;
+      line-height: 30px; }
     .literally .toolbar-row .toolbar-row-left {
       float: left;
       padding-left: 3px; }
     .literally .toolbar-row .toolbar-row-right {
-      width: 13em;
+      width: 15em;
       float: right;
       text-align: right;
       padding-right: 3px; }
     .literally .toolbar-row .color-square {
-      width: 24px;
-      height: 24px;
+      width: 37px;
+      height: 37px;
       border-radius: 5px;
       border: 1px solid #c8c8c8;
       margin-right: 3px; }
@@ -166,16 +166,16 @@
     float: left; }
     .literally .tools .button {
       text-align: center;
-      width: 30px;
-      height: 24px;
+      width: 40px;
+      height: 37px;
       padding: 0;
       position: relative; }
       .literally .tools .button .tool-image-wrapper {
-        height: 24px;
+        height: 35px;
         padding-top: 3px; }
         .literally .tools .button .tool-image-wrapper img {
-          width: 18px;
-          height: 18px;
+          width: 35px;
+          height: 35px;
           vertical-align: top; }
   .literally .zoom-display {
     text-align: center;
