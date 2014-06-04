@@ -14,6 +14,7 @@ block content
       form(id="requestForm" method="post" action="/requestDrawing/postRequest")
         .row
           .col-xs-12
+            #noRecErr(style="display: none; color: red;") Please choose at least 1 recipient!
             h2 Ask
             #requestFrom.section
             h3 to draw you
@@ -51,6 +52,11 @@ block content
 
     script.
       $('[data-action=sendReq]').click(function(e) {
-        console.log(rcpnts)
-        $('#requestForm').find('input[name=recipients]').val (rcpnts)
+      if (rcpnts.length){
+          $('#requestForm').find('input[name=recipients]').val (rcpnts);
+        } else {
+          document.getElementById('noRecErr').style.display = "block";
+          e.preventDefault();        
+        }
+        
       });

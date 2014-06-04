@@ -16,14 +16,11 @@ ConversationAnimator.prototype.initStaticPreview = function() {
   detailSpan.className = "row";
 
   var fromSpan = document.createElement('span');
-  fromSpan.className = "col-xs-2";
 
   var descSpan = document.createElement('span');
-  descSpan.className = "col-xs-4";
   descSpan.innerHTML ='<h2 class="inlineText"> drew a </h2><h2 class="inlineText desc">' + drawing.description + '</h2>';
 
   var toSpan = document.createElement('span');
-  toSpan.className = "col-xs-6";
 
   var self = this;
   if (this.imageIDs.length > 1) {
@@ -38,21 +35,19 @@ ConversationAnimator.prototype.initStaticPreview = function() {
       fromSpan.appendChild(pImg);
 
       self.collabStack.push(function(){ return pImg}());
+      detailSpan.appendChild(fromSpan);
+      detailSpan.appendChild(descSpan);
+      detailSpan.appendChild(toSpan);
     });
-    fromSpan.className = "col-xs-4";
     descSpan.innerHTML += '<h2 class="inlineText"> together</h2>';
-    descSpan.className = "col-xs-8";
   } else {
-    fromSpan.innerHTML = '<img class="circular-med" style="opacity: 1;" src="' + this.membersTable[drawing.from].picture + '"/>';
+    detailSpan.innerHTML += '<img class="circular-med" style="opacity: 1;" src="' + this.membersTable[drawing.from].picture + '"/>';
     descSpan.innerHTML += '<h2 class="inlineText"> for </h2>';
+    detailSpan.appendChild(descSpan);
     drawing.to.forEach(function(val, idx, arr){
-      toSpan.innerHTML += '<img class="circular-med" style="opacity: 1;" src="' + self.membersTable[val].picture + '"/>';
+      detailSpan.innerHTML += '<img class="circular-med" style="opacity: 1;" src="' + self.membersTable[val].picture + '"/>';
     });
   }
-  
-  detailSpan.appendChild(fromSpan);
-  detailSpan.appendChild(descSpan);
-  detailSpan.appendChild(toSpan);
 
 
   var imgSpan = document.createElement('span');

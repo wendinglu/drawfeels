@@ -6,12 +6,15 @@ a {
   color: #00B7FF;
 }
 #drawing-container {
-  height: 400px;
+  height: 450px;
+  margin-bottom: 10px;
 }
 .literally{
-  width: 100%;
-  height: 500px;
+  width: 80%;
+  height: 465px;
   border: 1px solid #000;
+  float: left;
+  margin-right: 50px;
 }
 
 .circular-med {
@@ -25,19 +28,23 @@ a {
 }
 
 .circular-small{
-  width: 50px;
+  width: 60px;
   -khtml-opacity: .5;
   opacity: .5;
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  -webkit-border-radius: 25px;
-  -moz-border-radius: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 30;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
   overflow: hidden;
-
 }
 
+.recpPicker{
+  padding: 0;
+  float: right;
+  width: 22%;
+}
 .circular IMG {
   width: 75px;
 }
@@ -87,7 +94,7 @@ a {
 }
 
 .med-icon {
-  height: 80px;
+  height: 65px;
 }
 
 .streamFeed {
@@ -115,14 +122,20 @@ a {
 
 .drawing-box {
   border: 1px solid #ccc;
-  padding: 2em;
+  padding: 5px;
+  margin: 10px auto;
 }
 
 .fit-img {
-  max-width: 100%;
+  max-width: 90%;
 }
 
 .name-box {
   display: inline-block;
+
   margin-left: 10px;
+}
+
+#send-to {
+  height: 395px;
 }

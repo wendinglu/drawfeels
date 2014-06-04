@@ -9,30 +9,34 @@ block content
   div(class='container-fluid')
     form#addDrawing(name="sendImage",method="post",action="/draw/sendImage")
       div(class='row')
-        div(class='col-xs-2')
+        div(class='col-xs-12')
           img(class="circular-med" src=user.picture) 
-        div(class='col-xs-2') 
-          h3 is drawing
-        div(class='col-xs-8')
-          if description
-            input(class='form-control' type='text' id='title-text' name='description' value=description)
-          else
-            input(class='form-control' type='text' id='title-text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
-      
+          h3(class="inlineText")  is drawing a 
+          span(style="display:inline-block; width: 600px;" )
+            if description
+              input(class='form-control' type='text' id='title-text' name='description' value=description)
+            else
+              input(class='form-control' type='text' id='title-text' name='description' value='something' onclick="if (this.value == 'something') {this.value = '';}")
+        
       div(class="row literally section")
         canvas
 
-      div(class='row section')
-        input(type='hidden' name='image')
+      input(type='hidden' name='image')
       input(type='hidden' name='request' value=request)
       input(type='hidden' name='convoID' value=convoID)
-      div(class='row section')
-        p#noRecErr(style="visibility: hidden; color: red;") Please choose at least 1 recipient!
-        div(id="send-to")
-          input(type='hidden' name='sendTo')
-      div(class='row section')
+      input(type='hidden' name='sendTo')
+
+      div(class="row recpPicker section")
+        h3(style="margin:0;") Drawing for:
+        div#send-to
+          #noRecErr(style="display: none; color: red;") Please choose at least 1 recipient!
+
         button(type='submit' class='button btn-primary btn-lg btn-block' data-action="publish" value='Send')
           span(class='glyphicon glyphicon-send')
+
+      
+      div(class='row section')
+        
 
   != "<script type='text/javascript'>"
   != "var rcpnts = [];"
@@ -72,7 +76,7 @@ block content
           var rcpntsStr = rcpnts.toString();
           $('#addDrawing').find('input[name=sendTo]').val (rcpnts);
         } else {
-          document.getElementById('noRecErr').style.visibility = "visible";
+          document.getElementById('noRecErr').style.display = "block";
           e.preventDefault();        
         }
     })}})
